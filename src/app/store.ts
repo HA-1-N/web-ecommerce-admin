@@ -1,9 +1,11 @@
-import counterSlice from '@/features/counter/counterSlice';
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
+import counterSlice from '@/features/counter/counterSlice';
+import userSlice from '@/features/user/user.slice';
 
 export const store = configureStore({
   reducer: {
     counter: counterSlice,
+    user: userSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

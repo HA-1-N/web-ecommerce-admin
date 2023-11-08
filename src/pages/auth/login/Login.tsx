@@ -1,5 +1,11 @@
 import { loginApi } from '@/api/auth.api';
-import { LoginProps } from '@/model/auth.model';
+import { useAppDispatch } from '@/app/hook';
+import { ROLE_CONSTANT } from '@/constants/auth.constant';
+import { openNotification } from '@/features/counter/counterSlice';
+import { getCurrentUserByIdAsync } from '@/features/user/user.slice';
+import { LoginProps, RoleModel } from '@/model/auth.model';
+import { setLocalStorageId, setLocalStorageToken } from '@/utils/auth.util';
+import { isRejected } from '@reduxjs/toolkit';
 import { Button, Col, Form, Input } from 'antd';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,17 +18,46 @@ type FieldType = {
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onFinish = async (values: LoginProps) => {
-    console.log('values...', values);
-    loginApi(values).then((res) => {
-      console.log('res...', res);
+    try {
+      const res = await loginApi(values);
       const data = res?.data;
-      localStorage.setItem('token', data?.token);
-      if (res) {
-        navigate('/');
+      setLocalStorageToken(data?.token);
+      setLocalStorageId(data?.id);
+
+      const currentUserRes = await dispatch(getCurrentUserByIdAsync(data?.id));
+      if (isRejected(currentUserRes)) {
+        return;
       }
-    });
+
+      const codeRoles = data?.roles?.map((item: RoleModel) => item?.code);
+
+      if (res && codeRoles?.includes(ROLE_CONSTANT.ADMIN)) {
+        navigate('/', { replace: true });
+        dispatch(
+          openNotification({
+            type: 'success',
+            message: 'Login success',
+            description: 'Welcome to admin page',
+          }),
+        );
+      } else {
+        dispatch(
+          openNotification({
+            type: 'error',
+            message: 'Login error',
+            description: 'Error Page',
+          }),
+        );
+        navigate('/404', {
+          replace: true,
+        });
+      }
+    } catch (error) {
+      console.log('error...', error);
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -93,7 +128,7 @@ const Login = () => {
                 </Col> */}
 
                 <Form.Item>
-                  <Button className="w-full" htmlType="submit">
+                  <Button className="w-full mt-3" htmlType="submit">
                     Submit
                   </Button>
                 </Form.Item>
@@ -101,7 +136,7 @@ const Login = () => {
             </div>
 
             {/* footer */}
-            <div className="mb-3">
+            <div className="mb-6">
               {/* <div className="flex items-center justify-center">
                 <h1>Not a member ?</h1>
                 <Link to={'/sign-up'} className="text-sky-500 ml-1">
