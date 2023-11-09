@@ -5,8 +5,10 @@ import ErrorPage from '@/pages/404/ErrorPage';
 import Login from '@/pages/auth/login/Login';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
+import Product from '@/pages/product/Product';
+import ProductOne from '@/pages/product/ProductOne';
 import React from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 // const dashboardRouter = {
 //   path: '/dashboard',
@@ -18,6 +20,18 @@ const dashboardRouter = {
   path: '/',
   element: <Dashboard />,
   children: [],
+};
+
+const productRouter = {
+  path: '',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/product/product-1',
+      element: <ProductOne />,
+      children: [],
+    },
+  ],
 };
 
 const router = createBrowserRouter([
@@ -32,7 +46,7 @@ const router = createBrowserRouter([
         </AuthorizationRouter>
       </AuthenticationRouter>
     ),
-    children: [dashboardRouter],
+    children: [dashboardRouter, productRouter],
   },
   {
     path: '/404',

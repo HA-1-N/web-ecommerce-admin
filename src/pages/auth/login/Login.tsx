@@ -48,15 +48,22 @@ const Login = () => {
           openNotification({
             type: 'error',
             message: 'Login error',
-            description: 'Error Page',
+            description: 'Error',
           }),
         );
         navigate('/404', {
           replace: true,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('error...', error);
+      dispatch(
+        openNotification({
+          type: 'error',
+          message: error.message,
+          description: 'Error',
+        }),
+      );
     }
   };
 
