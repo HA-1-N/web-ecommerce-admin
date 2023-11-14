@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux';
 import { decrement, increment } from '@/features/counter/counterSlice';
 import { setupAxiosInterceptors } from './configs/axios-interceptor';
 import HTTP_ADMIN_SERVICE from './configs/axios.config';
+import { ConfigProvider } from 'antd';
+import theme from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
@@ -32,7 +34,9 @@ root.render(
   <React.StrictMode>
     <GlobalStyles>
       <Provider store={store}>
-        <App />
+        <ConfigProvider theme={theme}>
+          <App />
+        </ConfigProvider>
       </Provider>
     </GlobalStyles>
   </React.StrictMode>,
