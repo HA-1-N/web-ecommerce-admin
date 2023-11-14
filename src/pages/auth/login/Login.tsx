@@ -81,8 +81,8 @@ const Login = () => {
           <div className="container">
             <div>
               <h1 className="text-2xl font-bold text-center my-3">Admin</h1>
-              <h2 className="text-xl font-bold text-center mb-3">Sign In</h2>
-              <h5 className="text-center mb-3 text-slate-500 font-semibold">Sign in to your account</h5>
+              <h2 className="text-xl font-bold text-center mt-3 mb-3">Sign In</h2>
+              <h5 className="text-base text-center mt-4 mb-3 text-slate-500 font-semibold">Sign in to your account</h5>
             </div>
 
             {/* form */}
@@ -135,7 +135,7 @@ const Login = () => {
                 </Col> */}
 
                 <Form.Item>
-                  <Button className="w-full mt-3" htmlType="submit">
+                  <Button type="primary" className="w-full mt-3" htmlType="submit">
                     Submit
                   </Button>
                 </Form.Item>
@@ -151,7 +151,7 @@ const Login = () => {
                 </Link>
               </div> */}
               <div className="text-center">
-                <Link to={'/forgot-password'} className="text-sky-500">
+                <Link to={'/verify-email'} className="text-sky-500">
                   Forgot password
                 </Link>
               </div>
