@@ -3,6 +3,8 @@ import AuthorizationRouter from '@/components/auth/AuthorizationRouter';
 import { ROLE_CONSTANT } from '@/constants/auth.constant';
 import ErrorPage from '@/pages/404/ErrorPage';
 import Login from '@/pages/auth/login/Login';
+import ResetPassword from '@/pages/auth/reset-password/ResetPassword';
+import VerifyEmail from '@/pages/auth/verify-email/VerifyEmail';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import Product from '@/pages/product/Product';
@@ -47,6 +49,14 @@ const router = createBrowserRouter([
       </AuthenticationRouter>
     ),
     children: [dashboardRouter, productRouter],
+  },
+  {
+    path: '/verify-email',
+    element: <VerifyEmail />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPassword />,
   },
   {
     path: '/404',
