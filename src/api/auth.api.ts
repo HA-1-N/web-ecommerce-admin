@@ -1,6 +1,7 @@
 import HTTP_ADMIN_SERVICE from '@/configs/axios.config';
+import { LoginProps } from '@/model/auth.model';
 
-export const loginApi = async (body: any) => {
+export const loginApi = async (body: LoginProps) => {
   return await HTTP_ADMIN_SERVICE.post('/auth/login', body);
 };
 
