@@ -1,16 +1,20 @@
 import { verifyEmailApi } from '@/api/auth.api';
 import { useAppDispatch } from '@/app/hook';
+import InputForm from '@/components/form/InputForm';
 import { openNotification } from '@/features/counter/counterSlice';
 import { Button, Form, Input } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface ValuesProps {
+  email: string;
+}
+
 const VerifyEmail = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onFinish = async (values: any) => {
-    console.log('Success:', values);
+  const onFinish = async (values: ValuesProps) => {
     const params = {
       email: values?.email,
     };
@@ -27,8 +31,15 @@ const VerifyEmail = () => {
           }),
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('error...', error);
+      dispatch(
+        openNotification({
+          type: 'error',
+          message: error.message,
+          description: 'Error',
+        }),
+      );
     }
   };
 
@@ -60,7 +71,7 @@ const VerifyEmail = () => {
                 colon={false}
                 layout="vertical"
               >
-                <Form.Item
+                <InputForm
                   name="email"
                   label="E-mail"
                   rules={[
@@ -73,9 +84,8 @@ const VerifyEmail = () => {
                       message: 'Please input your E-mail!',
                     },
                   ]}
-                >
-                  <Input placeholder="Enter Email" />
-                </Form.Item>
+                  placeholder="Enter Email"
+                />
                 <Form.Item>
                   <Button type="primary" className="w-full mt-3" htmlType="submit">
                     Verify

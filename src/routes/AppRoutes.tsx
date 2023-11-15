@@ -9,6 +9,7 @@ import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import Product from '@/pages/product/Product';
 import ProductOne from '@/pages/product/ProductOne';
+import ListUser from '@/pages/user/list-user/ListUser';
 import React from 'react';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
@@ -36,6 +37,17 @@ const productRouter = {
   ],
 };
 
+const userRouter = {
+  path: '',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/user/list-user',
+      element: <ListUser />,
+    },
+  ],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -48,7 +60,7 @@ const router = createBrowserRouter([
         </AuthorizationRouter>
       </AuthenticationRouter>
     ),
-    children: [dashboardRouter, productRouter],
+    children: [dashboardRouter, productRouter, userRouter],
   },
   {
     path: '/verify-email',

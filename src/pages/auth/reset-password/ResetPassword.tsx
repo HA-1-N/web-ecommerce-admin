@@ -1,16 +1,22 @@
 import { resetPasswordApi } from '@/api/auth.api';
 import { useAppDispatch } from '@/app/hook';
+import InputForm from '@/components/form/InputForm';
+import InputPasswordForm from '@/components/form/InputPasswordForm';
 import { openNotification } from '@/features/counter/counterSlice';
-import { Button, Form, Input } from 'antd';
+import { Button, Form } from 'antd';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+interface ValuesProps {
+  email?: string;
+  password?: string;
+}
 
 const ResetPassword = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onFinish = (values: any) => {
-    console.log('values...', values);
+  const onFinish = (values: ValuesProps) => {
     const body = {
       email: values.email,
       password: values.password,
@@ -68,7 +74,8 @@ const ResetPassword = () => {
                 colon={false}
                 layout="vertical"
               >
-                <Form.Item
+                <InputForm
+                  placeholder="Enter Email"
                   name="email"
                   label="E-mail"
                   rules={[
@@ -81,22 +88,20 @@ const ResetPassword = () => {
                       message: 'Please input your E-mail!',
                     },
                   ]}
-                >
-                  <Input />
-                </Form.Item>
+                />
 
-                <Form.Item
+                <InputPasswordForm
                   label="New password"
                   name="password"
                   rules={[{ required: true, message: 'Please input your password!' }]}
                   hasFeedback
-                >
-                  <Input.Password />
-                </Form.Item>
+                  placeholder="Enter password"
+                />
 
-                <Form.Item
+                <InputPasswordForm
                   name="confirm"
                   label="Confirm Password"
+                  placeholder="Enter confirm password"
                   dependencies={['password']}
                   hasFeedback
                   rules={[
@@ -113,9 +118,7 @@ const ResetPassword = () => {
                       },
                     }),
                   ]}
-                >
-                  <Input.Password />
-                </Form.Item>
+                />
 
                 <Form.Item>
                   <Button type="primary" className="w-full mt-3" htmlType="submit">

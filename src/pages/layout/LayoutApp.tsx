@@ -18,6 +18,18 @@ const items = [
     label: 'Dashboard',
   },
   {
+    key: 'user',
+    icon: <UserOutlined />,
+    label: 'User',
+    children: [
+      {
+        key: 'user/list-user',
+        icon: <UserOutlined />,
+        label: 'List User',
+      },
+    ],
+  },
+  {
     key: 'product',
     icon: <VideoCameraOutlined />,
     label: 'Product',
@@ -89,7 +101,7 @@ const LayoutApp = () => {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
-            background: colorBgContainer,
+            // background: colorBgContainer,
             overflowY: 'auto',
           }}
         >
