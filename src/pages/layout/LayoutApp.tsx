@@ -41,6 +41,18 @@ const items = [
       },
     ],
   },
+  {
+    key: 'size',
+    icon: <VideoCameraOutlined />,
+    label: 'Size',
+    children: [
+      {
+        key: 'size/list-size',
+        icon: <UploadOutlined />,
+        label: 'List-size',
+      },
+    ],
+  },
 ];
 
 const LayoutApp = () => {
