@@ -5,6 +5,8 @@ import ErrorPage from '@/pages/404/ErrorPage';
 import Login from '@/pages/auth/login/Login';
 import ResetPassword from '@/pages/auth/reset-password/ResetPassword';
 import VerifyEmail from '@/pages/auth/verify-email/VerifyEmail';
+import ListBrand from '@/pages/brand/list-brand/ListBrand';
+import ListCategory from '@/pages/category/list-category/ListCategory';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import Product from '@/pages/product/Product';
@@ -60,6 +62,28 @@ const sizeRouter = {
   ],
 };
 
+const categoryRouter = {
+  path: '/category',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/category/list-category',
+      element: <ListCategory />,
+    },
+  ],
+};
+
+const brandRouter = {
+  path: '/brand',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/brand/list-brand',
+      element: <ListBrand />,
+    },
+  ],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -72,7 +96,7 @@ const router = createBrowserRouter([
         </AuthorizationRouter>
       </AuthenticationRouter>
     ),
-    children: [dashboardRouter, userRouter, productRouter, sizeRouter],
+    children: [dashboardRouter, userRouter, productRouter, sizeRouter, categoryRouter, brandRouter],
   },
   {
     path: '/verify-email',

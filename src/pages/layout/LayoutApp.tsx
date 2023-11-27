@@ -53,6 +53,30 @@ const items = [
       },
     ],
   },
+  {
+    key: 'category',
+    icon: <VideoCameraOutlined />,
+    label: 'Category',
+    children: [
+      {
+        key: 'category/list-category',
+        icon: <UploadOutlined />,
+        label: 'List-category',
+      },
+    ],
+  },
+  {
+    key: 'brand',
+    icon: <VideoCameraOutlined />,
+    label: 'Brand',
+    children: [
+      {
+        key: 'brand/list-brand',
+        icon: <UploadOutlined />,
+        label: 'List-brand',
+      },
+    ],
+  },
 ];
 
 const LayoutApp = () => {
