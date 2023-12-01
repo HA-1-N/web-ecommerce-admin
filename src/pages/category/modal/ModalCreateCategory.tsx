@@ -1,26 +1,20 @@
-import { createSizeApi } from '@/api/size.api';
-import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
-import { openNotification } from '@/features/counter/counterSlice';
-import { SizeModel } from '@/model/size.model';
-import { getMsgErrorApi } from '@/utils/form.util';
 import { Button, Col, Form, Modal, Row } from 'antd';
 import React, { useRef } from 'react';
 
-interface ModalCreateSizeProps {
+interface ModalCreateCategoryProps {
   isModalOpen: boolean;
   onCancel: () => void;
   [key: string]: unknown;
 }
 
-const ModalCreateSize = (props: ModalCreateSizeProps) => {
+const ModalCreateCategory = (props: ModalCreateCategoryProps) => {
   const { onCancel, isModalOpen } = props;
 
-  const initialValues: SizeModel = {
+  const initialValues: any = {
     name: '',
+    description: '',
   };
-
-  const dispatch = useAppDispatch();
 
   const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
@@ -28,29 +22,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
     btnRef.current.click();
   };
 
-  const onFinish = async (values: SizeModel) => {
-    createSizeApi(values)
-      .then((res) => {
-        if (res) {
-          onCancel();
-          dispatch(
-            openNotification({
-              message: 'Create Size Success',
-              type: 'success',
-            }),
-          );
-        }
-      })
-      .catch((err) => {
-        console.log('err...', err);
-        dispatch(
-          openNotification({
-            message: getMsgErrorApi(err),
-            type: 'error',
-          }),
-        );
-      });
-  };
+  const onFinish = async (values: any) => {};
 
   const handleCancel = () => {
     onCancel();
@@ -63,7 +35,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
   return (
     <>
       <Modal
-        title="Create Size"
+        title="Create Category"
         open={isModalOpen}
         onCancel={onCancel}
         footer={[
@@ -102,6 +74,10 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
                   ]}
                 />
               </Col>
+
+              <Col span={24}>
+                <InputForm label="Description" placeholder="Enter Description" name="description" />
+              </Col>
             </Row>
 
             <Form.Item className="hidden" wrapperCol={{ offset: 8, span: 8 }}>
@@ -116,4 +92,4 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
   );
 };
 
-export default ModalCreateSize;
+export default ModalCreateCategory;
