@@ -48,10 +48,10 @@ const items: MenuItemsModels[] = [
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
     children: [
       {
-        key: 'product-1',
-        path: 'product/product-1',
+        key: 'list-product',
+        path: 'product/list-product',
         icon: <UploadOutlined />,
-        label: 'Product One',
+        label: 'List Product',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
       },
     ],
@@ -84,7 +84,7 @@ const items: MenuItemsModels[] = [
         path: 'category/list-category',
         icon: <UploadOutlined />,
         label: 'List-category',
-        roles: [ROLE_CONSTANT_ENUM.USER],
+        roles: [ROLE_CONSTANT_ENUM.ADMIN],
       },
     ],
   },

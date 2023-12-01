@@ -9,8 +9,7 @@ import ListBrand from '@/pages/brand/list-brand/ListBrand';
 import ListCategory from '@/pages/category/list-category/ListCategory';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
-import Product from '@/pages/product/Product';
-import ProductOne from '@/pages/product/ProductOne';
+import ListProduct from '@/pages/product/list-product/ListProduct';
 import ListSize from '@/pages/size/list-size/ListSize';
 import ListUser from '@/pages/user/list-user/ListUser';
 import React from 'react';
@@ -33,8 +32,8 @@ const productRouter = {
   element: <Outlet />,
   children: [
     {
-      path: '/product/product-1',
-      element: <ProductOne />,
+      path: '/product/list-product',
+      element: <ListProduct />,
       children: [],
     },
   ],
