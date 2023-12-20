@@ -9,7 +9,9 @@ import ListBrand from '@/pages/brand/list-brand/ListBrand';
 import ListCategory from '@/pages/category/list-category/ListCategory';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
+import CreateProduct from '@/pages/product/create/CreateProduct';
 import ListProduct from '@/pages/product/list-product/ListProduct';
+import UpdateProduct from '@/pages/product/update/UpdateProduct';
 import ListSize from '@/pages/size/list-size/ListSize';
 import ListUser from '@/pages/user/list-user/ListUser';
 import React from 'react';
@@ -34,6 +36,16 @@ const productRouter = {
     {
       path: '/product/list-product',
       element: <ListProduct />,
+      children: [],
+    },
+    {
+      path: '/product/create-product',
+      element: <CreateProduct />,
+      children: [],
+    },
+    {
+      path: '/product/update-product/:id',
+      element: <UpdateProduct />,
       children: [],
     },
   ],
