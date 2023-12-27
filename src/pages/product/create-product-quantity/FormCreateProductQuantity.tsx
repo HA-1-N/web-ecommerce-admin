@@ -1,54 +1,52 @@
-import { getAllBrandApi } from '@/api/brand.api';
-import { getAllCategoryApi } from '@/api/category.api';
+import { getAllColorApi } from '@/api/color.api';
+import { createProductQuantityApi, getAllIdNameProductApi } from '@/api/product.api';
+import { getAllSizeApi } from '@/api/size.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import SelectForm from '@/components/form/SelectForm';
-import TextAreaForm from '@/components/form/TextAreaForm';
 import { openNotification } from '@/features/counter/counterSlice';
-import { CategoryModels } from '@/model/category.model';
+import { ColorModels } from '@/model/color.model';
+import { ProductIdNameModels, CreateProductQuantityModels } from '@/model/product.model';
+import { SizeModel } from '@/model/size.model';
 import { filterOption, getMsgErrorApi } from '@/utils/form.util';
-import { Button, Col, Form, Modal, Row, Upload, UploadFile, UploadProps } from 'antd';
+import { Button, Col, Form, Modal, Row, Upload, UploadFile } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
+import { RcFile, UploadProps } from 'antd/es/upload';
 import React, { useEffect, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { RcFile } from 'antd/es/upload';
-import { CreateProductModels } from '@/model/product.model';
-import { createProductApi } from '@/api/product.api';
 import { useNavigate } from 'react-router-dom';
+import { PlusOutlined } from '@ant-design/icons';
 
-const FormCreateProduct = () => {
-  const initialValues: CreateProductModels = {
-    name: '',
-    price: '',
-    description: '',
-    brandId: null,
-    categoryId: null,
+const FormCreateProductQuantity = () => {
+  const initialValues = {
+    productId: null,
+    colorId: null,
+    sizeId: null,
+    quantity: null,
     image: [],
   };
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [optionCategory, setOptionCategory] = useState<DefaultOptionType[]>([]);
-  const [optionBrand, setOptionBrand] = useState<DefaultOptionType[]>([]);
+  const [optionProductDetails, setOptionProductDetails] = useState<DefaultOptionType[]>([]);
+  const [optionColorDetails, setOptionColorDetails] = useState<DefaultOptionType[]>([]);
+  const [optionSizeDetails, setOptionSizeDetails] = useState<DefaultOptionType[]>([]);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  // console.log('fileList', fileList);
-
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
 
-  const getAllCategory = async () => {
+  const getAllProductDetail = async () => {
     try {
-      const res = await getAllCategoryApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
+      const res = await getAllIdNameProductApi();
+      const newData: DefaultOptionType[] = res?.data?.map((item: ProductIdNameModels) => {
         return {
           label: item.name,
           value: item.id,
         };
       });
-      setOptionCategory(newData);
+      setOptionProductDetails(newData);
     } catch (error) {
       dispatch(
         openNotification({
@@ -59,16 +57,36 @@ const FormCreateProduct = () => {
     }
   };
 
-  const getAllBrand = async () => {
+  const getAllSize = async () => {
     try {
-      const res = await getAllBrandApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
+      const res = await getAllSizeApi();
+      const newData: DefaultOptionType[] = res?.data?.map((item: SizeModel) => {
         return {
           label: item.name,
           value: item.id,
         };
       });
-      setOptionBrand(newData);
+      setOptionSizeDetails(newData);
+    } catch (error) {
+      dispatch(
+        openNotification({
+          type: 'error',
+          message: getMsgErrorApi(error),
+        }),
+      );
+    }
+  };
+
+  const getAllColor = async () => {
+    try {
+      const res = await getAllColorApi();
+      const newData: DefaultOptionType[] = res?.data?.map((item: ColorModels) => {
+        return {
+          label: item.name,
+          value: item.id,
+        };
+      });
+      setOptionColorDetails(newData);
     } catch (error) {
       dispatch(
         openNotification({
@@ -80,23 +98,24 @@ const FormCreateProduct = () => {
   };
 
   useEffect(() => {
-    getAllBrand();
-    getAllCategory();
+    getAllProductDetail();
+    getAllSize();
+    getAllColor();
   }, []);
 
-  const buildBody = (values: CreateProductModels) => {
+  const buildBody = (values: CreateProductQuantityModels) => {
     const newValues = {
-      name: values?.name,
-      brandId: values?.brandId,
-      categoryId: values?.categoryId,
-      description: values?.description,
-      price: values?.price ? Number(values?.price) : null,
+      productId: values?.productId,
+      colorId: values?.colorId,
+      sizeId: values?.sizeId,
+      quantity: values?.quantity ? Number(values?.quantity) : null,
       status: 1,
     };
     return newValues;
   };
 
-  const onFinish = async (values: CreateProductModels) => {
+  const onFinish = async (values: CreateProductQuantityModels) => {
+    console.log('values...', values);
     const formData = new FormData();
     const body = buildBody(values);
     formData.append(
@@ -110,10 +129,11 @@ const FormCreateProduct = () => {
       formData.append('files', file.originFileObj as Blob);
     });
 
-    createProductApi(formData)
+    createProductQuantityApi(formData)
       .then((res) => {
-        // console.log('res...', res);
-        navigate('/product/list-product');
+        if (res?.status) {
+          navigate('/product/list-product-quantity');
+        }
       })
       .catch((err) => {
         dispatch(
@@ -124,7 +144,6 @@ const FormCreateProduct = () => {
         );
       });
   };
-
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
@@ -169,7 +188,6 @@ const FormCreateProduct = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
-
   return (
     <>
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
@@ -190,50 +208,14 @@ const FormCreateProduct = () => {
         >
           <Row gutter={[16, 16]}>
             <Col span={12}>
-              <InputForm
-                label="Name"
-                placeholder="Enter Name"
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your name!',
-                  },
-                ]}
-              />
-            </Col>
-            <Col span={12}>
-              <InputForm
-                label="Price"
-                placeholder="Enter Price"
-                name="price"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your price!',
-                  },
-                ]}
-              />
-            </Col>
-            <Col span={24}>
-              <TextAreaForm
-                name="description"
-                label="Description"
-                placeholder="Enter description"
-                showCount
-                maxLength={500}
-              />
-            </Col>
-
-            <Col span={12}>
               <SelectForm
                 showSearch
                 optionFilterProp="children"
-                label="Brand"
-                placeholder="Select Brand"
-                name="brandId"
+                label="Product"
+                placeholder="Select Product"
+                name="productId"
                 allowClear
-                options={optionBrand}
+                options={optionProductDetails}
                 filterOption={filterOption}
                 rules={[{ required: true, message: 'Please select brand!' }]}
               />
@@ -243,13 +225,41 @@ const FormCreateProduct = () => {
               <SelectForm
                 showSearch
                 optionFilterProp="children"
-                label="Category"
-                placeholder="Select Category"
-                name="categoryId"
-                options={optionCategory}
-                filterOption={filterOption}
+                label="Color"
+                placeholder="Select Color"
+                name="colorId"
                 allowClear
-                rules={[{ required: true, message: 'Please select category!' }]}
+                options={optionColorDetails}
+                filterOption={filterOption}
+                rules={[{ required: true, message: 'Please select brand!' }]}
+              />
+            </Col>
+
+            <Col span={12}>
+              <SelectForm
+                showSearch
+                optionFilterProp="children"
+                label="Size"
+                placeholder="Select Size"
+                name="sizeId"
+                allowClear
+                options={optionSizeDetails}
+                filterOption={filterOption}
+                rules={[{ required: true, message: 'Please select brand!' }]}
+              />
+            </Col>
+
+            <Col span={12}>
+              <InputForm
+                label="Quantity"
+                placeholder="Enter Quantity"
+                name="quantity"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your quantity!',
+                  },
+                ]}
               />
             </Col>
 
@@ -292,4 +302,4 @@ const FormCreateProduct = () => {
   );
 };
 
-export default FormCreateProduct;
+export default FormCreateProductQuantity;

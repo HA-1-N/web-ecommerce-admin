@@ -54,6 +54,13 @@ const items: MenuItemsModels[] = [
         label: 'List Product',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
       },
+      {
+        key: 'list-product-quantity',
+        path: 'product/list-product-quantity',
+        icon: <UploadOutlined />,
+        label: 'List Product Quantity',
+        roles: [ROLE_CONSTANT_ENUM.ADMIN],
+      },
     ],
   },
   {

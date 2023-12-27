@@ -12,7 +12,7 @@ import { openNotification } from '@/features/counter/counterSlice';
 import { CategoryModels } from '@/model/category.model';
 import { ParamsModel } from '@/model/page.model';
 import { FilterProductModels } from '@/model/product.model';
-import { getMsgErrorApi } from '@/utils/form.util';
+import { filterOption, getMsgErrorApi } from '@/utils/form.util';
 import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 import React, { useEffect, useState } from 'react';
@@ -187,7 +187,15 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
             </Col>
 
             <Col span={6}>
-              <SelectForm label="Brand" placeholder="Select Brand" name="brandId" allowClear options={optionBrand} />
+              <SelectForm
+                filterOption={filterOption}
+                showSearch
+                label="Brand"
+                placeholder="Select Brand"
+                name="brandId"
+                allowClear
+                options={optionBrand}
+              />
             </Col>
 
             <Col span={6}>
@@ -197,10 +205,18 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
                 name="categoryId"
                 options={optionCategory}
                 allowClear
+                filterOption={filterOption}
+                showSearch
               />
             </Col>
             <Col span={6}>
-              <SelectForm label="Status" placeholder="Select Status" name="status" options={OptionsStatusProduct} />
+              <SelectForm
+                label="Status"
+                placeholder="Select Status"
+                name="status"
+                options={OptionsStatusProduct}
+                allowClear
+              />
             </Col>
 
             <Col span={6}>
@@ -211,6 +227,8 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
                 allowClear
                 options={optionColor}
                 mode="multiple"
+                filterOption={filterOption}
+                showSearch
               />
             </Col>
 
@@ -222,6 +240,8 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
                 allowClear
                 options={optionSize}
                 mode="multiple"
+                filterOption={filterOption}
+                showSearch
               />
             </Col>
 

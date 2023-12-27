@@ -9,8 +9,11 @@ import ListBrand from '@/pages/brand/list-brand/ListBrand';
 import ListCategory from '@/pages/category/list-category/ListCategory';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
+import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
 import CreateProduct from '@/pages/product/create/CreateProduct';
+import ListProductQuantity from '@/pages/product/list-product-quantity/ListProductQuantity';
 import ListProduct from '@/pages/product/list-product/ListProduct';
+import UpdateProductQuantity from '@/pages/product/update-product-quantity/UpdateProductQuantity';
 import UpdateProduct from '@/pages/product/update/UpdateProduct';
 import ListSize from '@/pages/size/list-size/ListSize';
 import ListUser from '@/pages/user/list-user/ListUser';
@@ -46,6 +49,28 @@ const productRouter = {
     {
       path: '/product/update-product/:id',
       element: <UpdateProduct />,
+      children: [],
+    },
+  ],
+};
+
+const productQuantityRouter = {
+  path: '/product',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/product/list-product-quantity',
+      element: <ListProductQuantity />,
+      children: [],
+    },
+    {
+      path: '/product/create-product-quantity',
+      element: <CreateProductQuantity />,
+      children: [],
+    },
+    {
+      path: '/product/update-product-quantity/:id',
+      element: <UpdateProductQuantity />,
       children: [],
     },
   ],
@@ -107,7 +132,15 @@ const router = createBrowserRouter([
         </AuthorizationRouter>
       </AuthenticationRouter>
     ),
-    children: [dashboardRouter, userRouter, productRouter, sizeRouter, categoryRouter, brandRouter],
+    children: [
+      dashboardRouter,
+      userRouter,
+      productRouter,
+      productQuantityRouter,
+      sizeRouter,
+      categoryRouter,
+      brandRouter,
+    ],
   },
   {
     path: '/verify-email',

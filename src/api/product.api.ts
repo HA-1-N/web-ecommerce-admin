@@ -19,3 +19,31 @@ export const filterProductApi = (body: FilterProductModels, params: ParamsModel)
 export const getProductByIdApi = (id: number) => {
   return HTTP_ADMIN_SERVICE.get(`/product/get-by-id/${id}`);
 };
+
+export const updateProductApi = (data: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/product/update', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
+};
+
+export const deleteProductApi = (id: number) => {
+  return HTTP_ADMIN_SERVICE.delete(`/product/delete/${id}`);
+};
+
+export const getAllIdNameProductApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/product/get-id-name');
+};
+
+export const createProductQuantityApi = (data: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/product-quantity/create', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
+};

@@ -1,5 +1,7 @@
 import { BrandModel } from './brand.model';
 import { CategoryModels } from './category.model';
+import { ColorModels } from './color.model';
+import { SizeModel } from './size.model';
 
 export interface ProductModels {
   id?: number;
@@ -35,4 +37,29 @@ export interface CreateProductModels {
   brandId?: any;
   quantity?: any;
   status?: any;
+}
+
+export interface ProductIdNameModels {
+  id?: number;
+  name?: string;
+}
+
+export interface CreateProductQuantityModels {
+  id?: number;
+  quantity?: number;
+  productId?: number;
+  sizeId?: number;
+  colorId?: number;
+  status?: number;
+}
+
+export interface ProductQuantityModels {
+  id?: number;
+  quantity?: number;
+  product?: ProductIdNameModels;
+  size?: SizeModel;
+  color?: ColorModels;
+  status?: number;
+  created_at?: string;
+  updated_at?: string;
 }
