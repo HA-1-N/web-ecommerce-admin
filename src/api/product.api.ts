@@ -1,7 +1,49 @@
 import HTTP_ADMIN_SERVICE from '@/configs/axios.config';
 import { ParamsModel } from '@/model/page.model';
-import { FilterProductModels } from '@/model/product.model';
+import { CreateProductModels, FilterProductModels } from '@/model/product.model';
+
+export const createProductApi = (data: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/product/create', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
+};
 
 export const filterProductApi = (body: FilterProductModels, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.post('/product/filter', body, { params });
+};
+
+export const getProductByIdApi = (id: number) => {
+  return HTTP_ADMIN_SERVICE.get(`/product/get-by-id/${id}`);
+};
+
+export const updateProductApi = (data: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/product/update', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
+};
+
+export const deleteProductApi = (id: number) => {
+  return HTTP_ADMIN_SERVICE.delete(`/product/delete/${id}`);
+};
+
+export const getAllIdNameProductApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/product/get-id-name');
+};
+
+export const createProductQuantityApi = (data: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/product-quantity/create', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
 };

@@ -17,3 +17,7 @@ export const getSizeByIdApi = (id: string) => {
 export const updateSizeApi = (body: SizeModel) => {
   return HTTP_ADMIN_SERVICE.put('/size/update', body);
 };
+
+export const getAllSizeApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/size/get-all');
+};

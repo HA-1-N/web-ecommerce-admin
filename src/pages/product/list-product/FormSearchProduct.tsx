@@ -1,25 +1,36 @@
+import { getAllBrandApi } from '@/api/brand.api';
 import { getAllCategoryApi } from '@/api/category.api';
+import { getAllColorApi } from '@/api/color.api';
 import { filterProductApi } from '@/api/product.api';
+import { getAllSizeApi } from '@/api/size.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import SelectForm from '@/components/form/SelectForm';
+import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
 import { OptionsStatusProduct } from '@/constants/product.constant';
 import { openNotification } from '@/features/counter/counterSlice';
 import { CategoryModels } from '@/model/category.model';
+import { ParamsModel } from '@/model/page.model';
 import { FilterProductModels } from '@/model/product.model';
-import { getMsgErrorApi } from '@/utils/form.util';
+import { filterOption, getMsgErrorApi } from '@/utils/form.util';
 import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 import React, { useEffect, useState } from 'react';
 
-const FormSearchProduct = () => {
+interface FormSearchProductProps {
+  getProductFilter: (values: FilterProductModels, params: ParamsModel) => Promise<void>;
+}
+
+const FormSearchProduct = (props: FormSearchProductProps) => {
+  const { getProductFilter } = props;
+
   const initialValues: FilterProductModels = {
     name: null,
     status: null,
     brandId: null,
     categoryId: null,
-    colorId: null,
-    sizeId: null,
+    colorId: [],
+    sizeId: [],
     maxPrice: null,
     minPrice: null,
   };
@@ -27,6 +38,9 @@ const FormSearchProduct = () => {
   const dispatch = useAppDispatch();
 
   const [optionCategory, setOptionCategory] = useState<DefaultOptionType[]>([]);
+  const [optionBrand, setOptionBrand] = useState<DefaultOptionType[]>([]);
+  const [optionSize, setOptionSize] = useState<DefaultOptionType[]>([]);
+  const [optionColor, setOptionColor] = useState<DefaultOptionType[]>([]);
 
   const getAllCategory = async () => {
     try {
@@ -48,8 +62,71 @@ const FormSearchProduct = () => {
     }
   };
 
+  const getAllBrand = async () => {
+    try {
+      const res = await getAllBrandApi();
+      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
+        return {
+          label: item.name,
+          value: item.id,
+        };
+      });
+      setOptionBrand(newData);
+    } catch (error) {
+      dispatch(
+        openNotification({
+          type: 'error',
+          message: getMsgErrorApi(error),
+        }),
+      );
+    }
+  };
+
+  const getAllColor = async () => {
+    try {
+      const res = await getAllColorApi();
+      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
+        return {
+          label: item.name,
+          value: item.id,
+        };
+      });
+      setOptionColor(newData);
+    } catch (error) {
+      dispatch(
+        openNotification({
+          type: 'error',
+          message: getMsgErrorApi(error),
+        }),
+      );
+    }
+  };
+
+  const getAllSize = async () => {
+    try {
+      const res = await getAllSizeApi();
+      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
+        return {
+          label: item.name,
+          value: item.id,
+        };
+      });
+      setOptionSize(newData);
+    } catch (error) {
+      dispatch(
+        openNotification({
+          type: 'error',
+          message: getMsgErrorApi(error),
+        }),
+      );
+    }
+  };
+
   useEffect(() => {
     getAllCategory();
+    getAllBrand();
+    getAllColor();
+    getAllSize();
   }, []);
 
   const buildBody = (values: FilterProductModels) => {
@@ -68,22 +145,26 @@ const FormSearchProduct = () => {
   };
 
   const onFinish = async (values: FilterProductModels) => {
-    console.log('values...', values);
     const params = {
       page: 0,
       size: 10,
     };
     const body = buildBody(values);
-    filterProductApi(body, params).then((res) => {
-      console.log('res...', res);
-    });
+    getProductFilter(body, params);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  const onReset = async () => {};
+  const onReset = async () => {
+    const body = buildBody(initialValues);
+    const params = {
+      page: 0,
+      size: DEFAULT_PAGE_SIZE,
+    };
+    getProductFilter(body, params);
+  };
 
   return (
     <>
@@ -100,13 +181,21 @@ const FormSearchProduct = () => {
           layout="vertical"
           initialValues={initialValues}
         >
-          <Row gutter={[16, 16]}>
+          <Row gutter={[16, 8]}>
             <Col span={6}>
               <InputForm label="Name" placeholder="Enter Name" name="name" />
             </Col>
 
             <Col span={6}>
-              <SelectForm label="Status" placeholder="Select Status" name="status" options={OptionsStatusProduct} />
+              <SelectForm
+                filterOption={filterOption}
+                showSearch
+                label="Brand"
+                placeholder="Select Brand"
+                name="brandId"
+                allowClear
+                options={optionBrand}
+              />
             </Col>
 
             <Col span={6}>
@@ -116,7 +205,52 @@ const FormSearchProduct = () => {
                 name="categoryId"
                 options={optionCategory}
                 allowClear
+                filterOption={filterOption}
+                showSearch
               />
+            </Col>
+            <Col span={6}>
+              <SelectForm
+                label="Status"
+                placeholder="Select Status"
+                name="status"
+                options={OptionsStatusProduct}
+                allowClear
+              />
+            </Col>
+
+            <Col span={6}>
+              <SelectForm
+                label="Color"
+                placeholder="Select Color"
+                name="colorId"
+                allowClear
+                options={optionColor}
+                mode="multiple"
+                filterOption={filterOption}
+                showSearch
+              />
+            </Col>
+
+            <Col span={6}>
+              <SelectForm
+                label="Size"
+                placeholder="Select Size"
+                name="sizeId"
+                allowClear
+                options={optionSize}
+                mode="multiple"
+                filterOption={filterOption}
+                showSearch
+              />
+            </Col>
+
+            <Col span={6}>
+              <InputForm label="Min Price" placeholder="Enter Min Price" name="minPrice" />
+            </Col>
+
+            <Col span={6}>
+              <InputForm label="Max Price" placeholder="Enter Max Price" name="maxPrice" />
             </Col>
           </Row>
 
