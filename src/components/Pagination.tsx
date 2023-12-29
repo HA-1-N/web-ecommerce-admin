@@ -15,8 +15,8 @@ const PaginationTable = (props: PaginationProps) => {
     <>
       <div className="flex items-center justify-between">
         <div>
-          {page * DEFAULT_PAGE_SIZE + 1} - {Math.min(page * DEFAULT_PAGE_SIZE + DEFAULT_PAGE_SIZE, total)} trong số{' '}
-          {total}
+          {(page - 1) * DEFAULT_PAGE_SIZE + 1} - {Math.min((page - 1) * DEFAULT_PAGE_SIZE + DEFAULT_PAGE_SIZE, total)}{' '}
+          trong số {total}
         </div>
         <div>
           <Pagination

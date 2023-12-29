@@ -3,12 +3,16 @@ import { getAllCategoryApi } from '@/api/category.api';
 import { getAllColorApi } from '@/api/color.api';
 import { filterProductApi } from '@/api/product.api';
 import { getAllSizeApi } from '@/api/size.api';
-import { useAppDispatch } from '@/app/hook';
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import SelectForm from '@/components/form/SelectForm';
 import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
 import { OptionsStatusProduct } from '@/constants/product.constant';
+import { getOptionBrandAsync } from '@/features/brand/brand.slice';
+import { getOptionCategoryAsync } from '@/features/category/category.slice';
+import { getOptionColorAsync } from '@/features/color/color.slice';
 import { openNotification } from '@/features/counter/counterSlice';
+import { getOptionSizeAsync } from '@/features/size/size.slice';
 import { CategoryModels } from '@/model/category.model';
 import { ParamsModel } from '@/model/page.model';
 import { FilterProductModels } from '@/model/product.model';
@@ -36,90 +40,25 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
   };
 
   const dispatch = useAppDispatch();
-
-  const [optionCategory, setOptionCategory] = useState<DefaultOptionType[]>([]);
-  const [optionBrand, setOptionBrand] = useState<DefaultOptionType[]>([]);
-  const [optionSize, setOptionSize] = useState<DefaultOptionType[]>([]);
-  const [optionColor, setOptionColor] = useState<DefaultOptionType[]>([]);
+  const optionSize = useAppSelector((state) => state?.size?.optionSize);
+  const optionColor = useAppSelector((state) => state?.color?.optionColor);
+  const optionBrand = useAppSelector((state) => state?.brand?.optionBrand);
+  const optionCategory = useAppSelector((state) => state?.category?.optionCategory);
 
   const getAllCategory = async () => {
-    try {
-      const res = await getAllCategoryApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
-        return {
-          label: item.name,
-          value: item.id,
-        };
-      });
-      setOptionCategory(newData);
-    } catch (error) {
-      dispatch(
-        openNotification({
-          type: 'error',
-          message: getMsgErrorApi(error),
-        }),
-      );
-    }
+    dispatch(getOptionCategoryAsync());
   };
 
   const getAllBrand = async () => {
-    try {
-      const res = await getAllBrandApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
-        return {
-          label: item.name,
-          value: item.id,
-        };
-      });
-      setOptionBrand(newData);
-    } catch (error) {
-      dispatch(
-        openNotification({
-          type: 'error',
-          message: getMsgErrorApi(error),
-        }),
-      );
-    }
+    dispatch(getOptionBrandAsync());
   };
 
   const getAllColor = async () => {
-    try {
-      const res = await getAllColorApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
-        return {
-          label: item.name,
-          value: item.id,
-        };
-      });
-      setOptionColor(newData);
-    } catch (error) {
-      dispatch(
-        openNotification({
-          type: 'error',
-          message: getMsgErrorApi(error),
-        }),
-      );
-    }
+    dispatch(getOptionColorAsync());
   };
 
   const getAllSize = async () => {
-    try {
-      const res = await getAllSizeApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
-        return {
-          label: item.name,
-          value: item.id,
-        };
-      });
-      setOptionSize(newData);
-    } catch (error) {
-      dispatch(
-        openNotification({
-          type: 'error',
-          message: getMsgErrorApi(error),
-        }),
-      );
-    }
+    dispatch(getOptionSizeAsync());
   };
 
   useEffect(() => {
@@ -127,7 +66,7 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
     getAllBrand();
     getAllColor();
     getAllSize();
-  }, []);
+  }, [dispatch]);
 
   const buildBody = (values: FilterProductModels) => {
     const body = {

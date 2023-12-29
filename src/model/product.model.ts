@@ -1,4 +1,4 @@
-import { BrandModel } from './brand.model';
+import { BrandModels } from './brand.model';
 import { CategoryModels } from './category.model';
 import { ColorModels } from './color.model';
 import { SizeModel } from './size.model';
@@ -10,7 +10,7 @@ export interface ProductModels {
   description?: string;
   image?: string;
   category?: CategoryModels;
-  brand?: BrandModel;
+  brand?: BrandModels;
   quantity?: number;
   status?: boolean;
   created_at?: string;
@@ -44,6 +44,7 @@ export interface ProductIdNameModels {
   name?: string;
 }
 
+// Product Quantity
 export interface CreateProductQuantityModels {
   id?: number;
   quantity?: number;
@@ -62,4 +63,11 @@ export interface ProductQuantityModels {
   status?: number;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface FilterProductQuantityModels {
+  productId?: number | null;
+  sizeId?: number | null;
+  colorId?: number | null;
+  status?: number | null;
 }
