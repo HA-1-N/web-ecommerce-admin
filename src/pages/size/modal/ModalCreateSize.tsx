@@ -2,9 +2,11 @@ import { createSizeApi } from '@/api/size.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import { openNotification } from '@/features/counter/counterSlice';
+import { incrementCountSize } from '@/features/size/size.slice';
 import { SizeModel } from '@/model/size.model';
 import { getMsgErrorApi } from '@/utils/form.util';
 import { Button, Col, Form, Modal, Row } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import React, { useRef } from 'react';
 
 interface ModalCreateSizeProps {
@@ -21,6 +23,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
   };
 
   const dispatch = useAppDispatch();
+  const [formInstance] = Form.useForm();
 
   const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
@@ -32,13 +35,14 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
     createSizeApi(values)
       .then((res) => {
         if (res) {
-          onCancel();
+          dispatch(incrementCountSize());
           dispatch(
             openNotification({
               message: 'Create Size Success',
               type: 'success',
             }),
           );
+          onCancel();
         }
       })
       .catch((err) => {

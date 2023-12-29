@@ -7,6 +7,11 @@ import FormSearchUser from './FormSearchUser';
 import ResultUser from './ResultUser';
 import { FilterUserModel, UserModel } from '@/model/user.model';
 import { filterUserApi } from '@/api/user.api';
+import { useAppDispatch } from '@/app/hook';
+import { openNotification } from '@/features/counter/counterSlice';
+import { getMsgErrorApi } from '@/utils/form.util';
+import { DEFAULT_PAGE_SIZE, TOTAL_COUNT_HEADER } from '@/constants/page.constant';
+import { ParamsModel } from '@/model/page.model';
 
 const ListUser = () => {
   const initialValues: FilterUserModel = {
@@ -17,22 +22,36 @@ const ListUser = () => {
     dateOfBirth: null,
   };
 
+  const dispatch = useAppDispatch();
+
   // const [valuesUpload, setValuesUpload] = useState<FilterUserModel>(initialValues);
   const [userDetail, setUserDetail] = useState<UserModel[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
-  const getUserFilter = async (values: FilterUserModel) => {
-    filterUserApi(values)
+  const getUserFilter = async (values: FilterUserModel, params: ParamsModel) => {
+    filterUserApi(values, params)
       .then((res) => {
         setUserDetail(res?.data);
+        setTotalCount(parseInt(res?.headers[TOTAL_COUNT_HEADER]));
       })
       .catch((err) => {
-        console.log('err...', err);
+        dispatch(
+          openNotification({
+            message: getMsgErrorApi(err),
+            type: 'error',
+          }),
+        );
       });
   };
 
   useEffect(() => {
-    getUserFilter(initialValues);
-  }, []);
+    const params = {
+      page: page - 1,
+      size: DEFAULT_PAGE_SIZE,
+    };
+    getUserFilter(initialValues, params);
+  }, [page]);
 
   return (
     <>
@@ -52,8 +71,8 @@ const ListUser = () => {
 
       <BoxContainer>
         <HeaderTitle title="List User" />
-        <FormSearchUser getUserFilter={getUserFilter} />
-        <ResultUser userDetail={userDetail} />
+        <FormSearchUser page={page} getUserFilter={getUserFilter} />
+        <ResultUser page={page} totalCount={totalCount} setPage={setPage} userDetail={userDetail} />
       </BoxContainer>
     </>
   );

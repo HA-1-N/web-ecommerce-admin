@@ -1,6 +1,6 @@
 import HTTP_ADMIN_SERVICE from '@/configs/axios.config';
 import { ParamsModel } from '@/model/page.model';
-import { CreateProductModels, FilterProductModels } from '@/model/product.model';
+import { CreateProductModels, FilterProductModels, FilterProductQuantityModels } from '@/model/product.model';
 
 export const createProductApi = (data: FormData) => {
   return HTTP_ADMIN_SERVICE.post('/product/create', data, {
@@ -38,6 +38,7 @@ export const getAllIdNameProductApi = () => {
   return HTTP_ADMIN_SERVICE.get('/product/get-id-name');
 };
 
+// product quantity
 export const createProductQuantityApi = (data: FormData) => {
   return HTTP_ADMIN_SERVICE.post('/product-quantity/create', data, {
     headers: {
@@ -46,4 +47,8 @@ export const createProductQuantityApi = (data: FormData) => {
       type: 'formData',
     },
   });
+};
+
+export const filterProductQuantityApi = (data: FilterProductQuantityModels, params: ParamsModel) => {
+  return HTTP_ADMIN_SERVICE.post('/product-quantity/filter', data, { params });
 };

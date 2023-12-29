@@ -1,4 +1,4 @@
-import { BrandModel } from '@/model/brand.model';
+import { BrandModels } from '@/model/brand.model';
 import { CategoryModels } from '@/model/category.model';
 import { ProductModels } from '@/model/product.model';
 import { Button, Space, Typography } from 'antd';
@@ -44,7 +44,7 @@ const ResultProduct = (props: ResultProductProps) => {
       title: 'Brand',
       dataIndex: 'brand',
       key: 'brand',
-      render: (value: BrandModel, record: ProductModels) => value?.name,
+      render: (value: BrandModels, record: ProductModels) => value?.name,
     },
     {
       title: 'Category',

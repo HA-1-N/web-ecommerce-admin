@@ -1,6 +1,6 @@
 import { getAllBrandApi } from '@/api/brand.api';
 import { getAllCategoryApi } from '@/api/category.api';
-import { useAppDispatch } from '@/app/hook';
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import SelectForm from '@/components/form/SelectForm';
 import TextAreaForm from '@/components/form/TextAreaForm';
@@ -15,6 +15,8 @@ import { RcFile } from 'antd/es/upload';
 import { CreateProductModels } from '@/model/product.model';
 import { createProductApi } from '@/api/product.api';
 import { useNavigate } from 'react-router-dom';
+import { getOptionCategoryAsync } from '@/features/category/category.slice';
+import { getOptionBrandAsync } from '@/features/brand/brand.slice';
 
 const FormCreateProduct = () => {
   const initialValues: CreateProductModels = {
@@ -29,60 +31,26 @@ const FormCreateProduct = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [optionCategory, setOptionCategory] = useState<DefaultOptionType[]>([]);
-  const [optionBrand, setOptionBrand] = useState<DefaultOptionType[]>([]);
+  const optionCategory = useAppSelector((state) => state?.category?.optionCategory);
+  const optionBrand = useAppSelector((state) => state?.brand?.optionBrand);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-  // console.log('fileList', fileList);
-
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
 
   const getAllCategory = async () => {
-    try {
-      const res = await getAllCategoryApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
-        return {
-          label: item.name,
-          value: item.id,
-        };
-      });
-      setOptionCategory(newData);
-    } catch (error) {
-      dispatch(
-        openNotification({
-          type: 'error',
-          message: getMsgErrorApi(error),
-        }),
-      );
-    }
+    dispatch(getOptionCategoryAsync());
   };
 
   const getAllBrand = async () => {
-    try {
-      const res = await getAllBrandApi();
-      const newData: DefaultOptionType[] = res?.data?.map((item: CategoryModels) => {
-        return {
-          label: item.name,
-          value: item.id,
-        };
-      });
-      setOptionBrand(newData);
-    } catch (error) {
-      dispatch(
-        openNotification({
-          type: 'error',
-          message: getMsgErrorApi(error),
-        }),
-      );
-    }
+    dispatch(getOptionBrandAsync);
   };
 
   useEffect(() => {
     getAllBrand();
     getAllCategory();
-  }, []);
+  }, [dispatch]);
 
   const buildBody = (values: CreateProductModels) => {
     const newValues = {

@@ -1,16 +1,28 @@
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import SelectForm from '@/components/form/SelectForm';
 import { OptionsStatusProduct } from '@/constants/product.constant';
+import { getOptionColorAsync } from '@/features/color/color.slice';
+import { getOptionProductAsync } from '@/features/product/product.slice';
+import { getOptionSizeAsync } from '@/features/size/size.slice';
 import { filterOption } from '@/utils/form.util';
-import { Col, Form, Row } from 'antd';
+import { Button, Col, Form, Row } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const FormSearchProductQuantity = () => {
   const initialValues = {};
 
-  const [optionProduct, setOptionProduct] = useState<DefaultOptionType[]>([]);
-  const [optionSize, setOptionSize] = useState<DefaultOptionType[]>([]);
-  const [optionColor, setOptionColor] = useState<DefaultOptionType[]>([]);
+  const dispatch = useAppDispatch();
+
+  const optionColor = useAppSelector((state) => state?.color?.optionColor);
+  const optionSize = useAppSelector((state) => state?.size?.optionSize);
+  const optionProduct = useAppSelector((state) => state?.product?.optionProduct);
+
+  useEffect(() => {
+    dispatch(getOptionColorAsync());
+    dispatch(getOptionSizeAsync());
+    dispatch(getOptionProductAsync());
+  }, []);
 
   const onFinish = async (values: any) => {};
 
@@ -44,7 +56,7 @@ const FormSearchProductQuantity = () => {
                 placeholder="Select Product"
                 name="productId"
                 allowClear
-                // options={optionBrand}
+                options={optionProduct}
               />
             </Col>
             <Col span={6}>
@@ -55,7 +67,7 @@ const FormSearchProductQuantity = () => {
                 placeholder="Select Color"
                 name="colorId"
                 allowClear
-                // options={optionBrand}
+                options={optionColor}
               />
             </Col>
             <Col span={6}>
@@ -66,7 +78,7 @@ const FormSearchProductQuantity = () => {
                 placeholder="Select Size"
                 name="size"
                 allowClear
-                // options={optionBrand}
+                options={optionSize}
               />
             </Col>
             <Col span={6}>
@@ -79,6 +91,18 @@ const FormSearchProductQuantity = () => {
               />
             </Col>
           </Row>
+
+          <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+            <div className="flex items-center justify-center mt-4">
+              <Button type="primary" size="large" htmlType="submit" className="w-32">
+                Submit
+              </Button>
+
+              <Button htmlType="reset" size="large" className="ml-2 w-32" onClick={onReset}>
+                Reset
+              </Button>
+            </div>
+          </Form.Item>
         </Form>
       </div>
     </>

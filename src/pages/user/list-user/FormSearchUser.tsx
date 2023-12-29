@@ -1,21 +1,25 @@
 import DateForm from '@/components/form/DateForm';
 import InputForm from '@/components/form/InputForm';
 import SelectForm from '@/components/form/SelectForm';
+import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
 import { OptionGender } from '@/constants/user.constant';
+import { ParamsModel } from '@/model/page.model';
 import { FilterUserModel } from '@/model/user.model';
 import { formatDate } from '@/utils/date.util';
+import { filterOption } from '@/utils/form.util';
 import { Button, Col, DatePicker, Form, Row } from 'antd';
 import dayjs from 'dayjs';
 // import dayjs from ""
 import React from 'react';
 
 interface FormSearchUserModel {
-  getUserFilter: (values: FilterUserModel) => void;
+  getUserFilter: (values: FilterUserModel, params: ParamsModel) => Promise<void>;
+  page: number;
   [key: string]: unknown;
 }
 
 const FormSearchUser = (props: FormSearchUserModel) => {
-  const { getUserFilter } = props;
+  const { getUserFilter, page } = props;
 
   const initialFilterValues: FilterUserModel = {
     name: '',
@@ -40,7 +44,11 @@ const FormSearchUser = (props: FormSearchUserModel) => {
 
   const onFinish = async (values: FilterUserModel) => {
     const body = buildBody(values);
-    getUserFilter(body);
+    const params = {
+      page: page - 1,
+      size: DEFAULT_PAGE_SIZE,
+    };
+    getUserFilter(body, params);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -49,7 +57,11 @@ const FormSearchUser = (props: FormSearchUserModel) => {
 
   const onReset = () => {
     const body = buildBody(initialFilterValues);
-    getUserFilter(body);
+    const params = {
+      page: 0,
+      size: DEFAULT_PAGE_SIZE,
+    };
+    getUserFilter(body, params);
   };
 
   return (
@@ -85,6 +97,18 @@ const FormSearchUser = (props: FormSearchUserModel) => {
             <Col span={8}>
               <DateForm label="Date Of Birth" name="dateOfBirth" format="DD-MM-YYYY" />
             </Col>
+
+            {/* <Col span={8}>
+              <SelectForm
+                filterOption={filterOption}
+                showSearch
+                label="Role"
+                placeholder="Select Role"
+                name="roleId"
+                allowClear
+                // options={optionRole}
+              />
+            </Col> */}
           </Row>
 
           <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
