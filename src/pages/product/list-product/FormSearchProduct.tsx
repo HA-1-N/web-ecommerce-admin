@@ -23,10 +23,12 @@ import React, { useEffect, useState } from 'react';
 
 interface FormSearchProductProps {
   getProductFilter: (values: FilterProductModels, params: ParamsModel) => Promise<void>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const FormSearchProduct = (props: FormSearchProductProps) => {
-  const { getProductFilter } = props;
+  const { getProductFilter, page, setPage } = props;
 
   const initialValues: FilterProductModels = {
     name: null,
@@ -86,7 +88,7 @@ const FormSearchProduct = (props: FormSearchProductProps) => {
   const onFinish = async (values: FilterProductModels) => {
     const params = {
       page: 0,
-      size: 10,
+      size: DEFAULT_PAGE_SIZE,
     };
     const body = buildBody(values);
     getProductFilter(body, params);

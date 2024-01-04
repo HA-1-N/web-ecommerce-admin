@@ -138,6 +138,46 @@ const FormCreateProduct = () => {
     </div>
   );
 
+  const checkImageSizeAndRatio = (file: File): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.src = window.URL.createObjectURL(file);
+
+      image.onload = () => {
+        // Kiểm tra kích thước
+        if (file.size / 1024 / 1024 > 5) {
+          // Thông báo khi hình ảnh quá lớn
+          dispatch(
+            openNotification({
+              type: 'error',
+              message: 'Hình ảnh phải nhỏ hơn 5Mb',
+            }),
+          );
+          reject('Hình ảnh quá lớn');
+        } else {
+          resolve();
+        }
+      };
+
+      image.onerror = () => {
+        // Thông báo khi không thể đọc hình ảnh
+        dispatch(
+          openNotification({
+            type: 'error',
+            message: 'Không thể đọc hình ảnh',
+          }),
+        );
+        reject('Không thể đọc hình ảnh');
+      };
+    });
+  };
+
+  const dummyRequest = (props: any) => {
+    const { file, onSuccess } = props;
+    setTimeout(() => {
+      onSuccess('ok');
+    }, 0);
+  };
   return (
     <>
       <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
@@ -230,12 +270,15 @@ const FormCreateProduct = () => {
                 rules={[{ required: true, message: 'Vui lòng chọn hình ảnh!' }]}
               >
                 <Upload
-                  action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                  // action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                   listType="picture-card"
                   fileList={fileList}
                   onPreview={handlePreview}
                   onChange={handleChange}
                   multiple
+                  beforeUpload={checkImageSizeAndRatio}
+                  accept="image/*"
+                  customRequest={dummyRequest}
                 >
                   {fileList.length >= 8 ? null : uploadButton}
                 </Upload>

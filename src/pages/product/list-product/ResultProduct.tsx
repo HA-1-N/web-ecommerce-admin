@@ -1,3 +1,4 @@
+import PaginationTable from '@/components/Pagination';
 import { BrandModels } from '@/model/brand.model';
 import { CategoryModels } from '@/model/category.model';
 import { ProductModels } from '@/model/product.model';
@@ -8,10 +9,13 @@ import { useNavigate } from 'react-router-dom';
 
 interface ResultProductProps {
   productDetail: ProductModels[] | undefined;
+  page: number;
+  totalCount: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ResultProduct = (props: ResultProductProps) => {
-  const { productDetail } = props;
+  const { productDetail, page, totalCount, setPage } = props;
 
   const navigate = useNavigate();
 
@@ -39,6 +43,12 @@ const ResultProduct = (props: ResultProductProps) => {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
+      render: (value: any, record: ProductModels) => {
+        const initValue = 0;
+        const arrQuantity: number[] = record?.productQuantities?.map((item) => item.quantity);
+        const totalQuantity = arrQuantity?.reduce((accumulator, currentValue) => accumulator + currentValue, initValue);
+        return <div>{totalQuantity}</div>;
+      },
     },
     {
       title: 'Brand',
@@ -76,10 +86,17 @@ const ResultProduct = (props: ResultProductProps) => {
     },
   ];
 
+  const handleChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
     <>
       <div className="mt-10">
-        <Table columns={columns} dataSource={productDetail} />
+        <Table columns={columns} dataSource={productDetail} pagination={false} />
+        <div className="mt-6">
+          <PaginationTable page={page} total={totalCount} onChangePage={handleChangePage} />
+        </div>
       </div>
     </>
   );

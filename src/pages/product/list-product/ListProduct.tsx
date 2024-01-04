@@ -8,7 +8,7 @@ import FormSearchProduct from './FormSearchProduct';
 import ResultProduct from './ResultProduct';
 import { FilterProductModels, ProductModels } from '@/model/product.model';
 import { filterProductApi } from '@/api/product.api';
-import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
+import { DEFAULT_PAGE_SIZE, TOTAL_COUNT_HEADER } from '@/constants/page.constant';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { openNotification } from '@/features/counter/counterSlice';
@@ -31,11 +31,14 @@ const ListProduct = () => {
   const dispatch = useDispatch();
 
   const [productDetail, setProductDetail] = useState<ProductModels[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const getProductFilter = async (values: FilterProductModels, params: ParamsModel) => {
     filterProductApi(values, params)
       .then((res) => {
         setProductDetail(res?.data);
+        setTotalCount(parseInt(res?.headers[TOTAL_COUNT_HEADER]));
       })
       .catch((err) => {
         dispatch(
@@ -82,8 +85,8 @@ const ListProduct = () => {
 
       <BoxContainer>
         <HeaderTitle title="List Product" />
-        <FormSearchProduct getProductFilter={getProductFilter} />
-        <ResultProduct productDetail={productDetail} />
+        <FormSearchProduct page={page} setPage={setPage} getProductFilter={getProductFilter} />
+        <ResultProduct productDetail={productDetail} page={page} totalCount={totalCount} setPage={setPage} />
       </BoxContainer>
     </>
   );
