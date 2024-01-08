@@ -1,4 +1,4 @@
-import { filterSizeApi, getAllSizeApi } from '@/api/size.api';
+import { filterSizeApi, getAllSizeApi, getSizeByIdApi } from '@/api/size.api';
 import { TOTAL_COUNT_HEADER } from '@/constants/page.constant';
 import { ParamsModel } from '@/model/page.model';
 import { SizeModel } from '@/model/size.model';
@@ -7,24 +7,28 @@ import { DefaultOptionType } from 'antd/es/select';
 
 interface SizeState {
   sizeDetails: SizeModel[];
+  sizeDetail: SizeModel | null;
   optionSize: DefaultOptionType[];
   formSearch: SizeModel;
   pageSearch: number;
   totalPage: number;
   countSize: number;
+  countSizeById: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: SizeState = {
   sizeDetails: [],
+  sizeDetail: null,
   optionSize: [],
   formSearch: {
-    name: null,
+    name: '',
   },
   pageSearch: 1,
   totalPage: 0,
   countSize: 0,
+  countSizeById: 0,
   loading: false,
   error: null,
 };
@@ -51,6 +55,15 @@ export const getOptionSizeAsync = createAsyncThunk('size/getAllSize', async (_, 
       };
     });
     return convertOptionSize;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error);
+  }
+});
+
+export const getSizeFindByIdAsync = createAsyncThunk('size/getSizeById', async (id: number | undefined, thunkApi) => {
+  try {
+    const response = await getSizeByIdApi(id);
+    return response;
   } catch (error) {
     return thunkApi.rejectWithValue(error);
   }
@@ -88,6 +101,12 @@ const sizeSlice = createSlice({
         countSize: state.countSize - 1,
       };
     },
+    incrementCountSizeById(state) {
+      return {
+        ...state,
+        countSizeById: state.countSizeById + 1,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(filterSizeAsync.pending, (state) => {
@@ -115,8 +134,21 @@ const sizeSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+    builder.addCase(getSizeFindByIdAsync.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getSizeFindByIdAsync.fulfilled, (state, action) => {
+      state.sizeDetail = action.payload.data;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(getSizeFindByIdAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   },
 });
 
-export const { changeFormSearch, changePageSearch, incrementCountSize } = sizeSlice.actions;
+export const { changeFormSearch, changePageSearch, incrementCountSize, decrementCountSize, incrementCountSizeById } =
+  sizeSlice.actions;
 export default sizeSlice.reducer;

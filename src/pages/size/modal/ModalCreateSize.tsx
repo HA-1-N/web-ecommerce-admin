@@ -23,7 +23,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
   };
 
   const dispatch = useAppDispatch();
-  const [formInstance] = Form.useForm();
+  const [form] = Form.useForm();
 
   const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
@@ -42,6 +42,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
               type: 'success',
             }),
           );
+          form.resetFields();
           onCancel();
         }
       })
@@ -57,6 +58,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
   };
 
   const handleCancel = () => {
+    form.resetFields();
     onCancel();
   };
 
@@ -81,6 +83,7 @@ const ModalCreateSize = (props: ModalCreateSizeProps) => {
       >
         <div>
           <Form
+            form={form}
             name="basic"
             labelCol={{ span: 12 }}
             wrapperCol={{ span: 32 }}
