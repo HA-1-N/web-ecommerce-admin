@@ -10,12 +10,12 @@ export const filterSizeApi = (body: SizeModel, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.post('/size/filter', body, { params });
 };
 
-export const getSizeByIdApi = (id: string) => {
-  return HTTP_ADMIN_SERVICE.get(`/size/detail/${id}`);
+export const getSizeByIdApi = (id: number | undefined) => {
+  return HTTP_ADMIN_SERVICE.get(`/size/find-by-id/${id}`);
 };
 
-export const updateSizeApi = (body: SizeModel) => {
-  return HTTP_ADMIN_SERVICE.put('/size/update', body);
+export const updateSizeApi = (body: SizeModel, id: number | undefined) => {
+  return HTTP_ADMIN_SERVICE.put(`/size/update/${id}`, body);
 };
 
 export const getAllSizeApi = () => {

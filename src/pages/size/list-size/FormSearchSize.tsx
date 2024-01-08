@@ -10,11 +10,14 @@ import React, { useEffect } from 'react';
 const FormSearchSize = () => {
   const dispatch = useAppDispatch();
   const page = useAppSelector((state) => state.size.pageSearch);
+
   const countSize = useAppSelector((state) => state.size.countSize);
 
   const initialValues: SizeModel = {
     name: '',
   };
+
+  const formSearch = useAppSelector((state) => state.size.formSearch);
 
   const params: ParamsModel = {
     page: page - 1,
@@ -22,12 +25,12 @@ const FormSearchSize = () => {
   };
 
   useEffect(() => {
-    dispatch(filterSizeAsync({ body: initialValues, params }));
+    dispatch(filterSizeAsync({ body: formSearch, params }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, dispatch, countSize]);
 
   const onFinish = async (values: SizeModel) => {
-    await dispatch(changeFormSearch(values));
+    dispatch(changeFormSearch(values));
     if (page === 1) {
       await dispatch(filterSizeAsync({ body: values, params }));
     } else {

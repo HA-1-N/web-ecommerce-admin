@@ -85,7 +85,7 @@ const ResultProductQuantity = (props: ResultProductQuantityProps) => {
       <div className="mt-10">
         <Table columns={columns} dataSource={data} pagination={false} scroll={{ x: 1500 }} bordered rowKey="id" />
         <div className="mt-6">
-          <PaginationTable page={0} total={10} onChangePage={handleChangePage} />
+          <PaginationTable page={1} total={10} onChangePage={handleChangePage} />
         </div>
       </div>
     </>

@@ -12,9 +12,16 @@ export interface ProductModels {
   category?: CategoryModels;
   brand?: BrandModels;
   quantity?: number;
+  productQuantities: ProductQuantityModels[];
+  productImages: ProductImageModels[];
   status?: boolean;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface ProductImageModels {
+  id?: number;
+  image?: string;
 }
 
 export interface FilterProductModels {
@@ -39,6 +46,8 @@ export interface CreateProductModels {
   status?: any;
 }
 
+export interface UpdateProductModels extends CreateProductModels {}
+
 export interface ProductIdNameModels {
   id?: number;
   name?: string;
@@ -56,7 +65,7 @@ export interface CreateProductQuantityModels {
 
 export interface ProductQuantityModels {
   id?: number;
-  quantity?: number;
+  quantity: number;
   product?: ProductIdNameModels;
   size?: SizeModel;
   color?: ColorModels;
