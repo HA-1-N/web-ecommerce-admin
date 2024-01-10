@@ -1,4 +1,4 @@
-import { createBrandApi } from '@/api/brand.api';
+import { updateBrandApi } from '@/api/brand.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import { incrementCountBrand } from '@/features/brand/brand.slice';
@@ -8,22 +8,25 @@ import { getMsgErrorApi } from '@/utils/form.util';
 import { Button, Col, Form, Modal, Row } from 'antd';
 import React, { useRef } from 'react';
 
-interface ModalCreateBrandProps {
+interface ModalUpdateBrandProps {
   isModalOpen: boolean;
   onCancel: () => void;
+  id: number | undefined;
+  brandDetail: BrandModels | null;
   [key: string]: unknown;
 }
 
-const ModalCreateBrand = (props: ModalCreateBrandProps) => {
-  const { onCancel, isModalOpen } = props;
-
-  const initialValues: BrandModels = {
-    name: '',
-    description: '',
-  };
+const ModalUpdateBrand = (props: ModalUpdateBrandProps) => {
+  const { brandDetail, id, isModalOpen, onCancel } = props;
 
   const dispatch = useAppDispatch();
+
   const [form] = Form.useForm();
+
+  const initialValues: BrandModels = {
+    name: brandDetail?.name,
+    description: brandDetail?.description,
+  };
 
   const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
@@ -31,30 +34,28 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
     btnRef.current.click();
   };
 
-  const onFinish = async (values: any) => {
-    createBrandApi(values)
-      .then((res) => {
-        if (res) {
-          dispatch(incrementCountBrand());
-          dispatch(
-            openNotification({
-              message: 'Create Brand Success',
-              type: 'success',
-            }),
-          );
-          form.resetFields();
-          onCancel();
-        }
-      })
-      .catch((err) => {
-        // console.log('err...', err);
+  const onFinish = async (values: BrandModels) => {
+    try {
+      const res = await updateBrandApi(values, id);
+      if (res) {
+        dispatch(incrementCountBrand());
         dispatch(
           openNotification({
-            message: getMsgErrorApi(err),
-            type: 'error',
+            message: 'Update Brand Success!',
+            description: 'You have successfully updated the Brand!',
+            type: 'success',
           }),
         );
-      });
+        onCancel();
+      }
+    } catch (error) {
+      dispatch(
+        openNotification({
+          message: getMsgErrorApi(error),
+          type: 'error',
+        }),
+      );
+    }
   };
 
   const handleCancel = () => {
@@ -69,7 +70,7 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
   return (
     <>
       <Modal
-        title="Create Brand"
+        title="Update Brand"
         open={isModalOpen}
         onCancel={onCancel}
         footer={[
@@ -83,6 +84,7 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
       >
         <div>
           <Form
+            form={form}
             name="basic"
             labelCol={{ span: 12 }}
             wrapperCol={{ span: 32 }}
@@ -126,4 +128,4 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
   );
 };
 
-export default ModalCreateBrand;
+export default ModalUpdateBrand;
