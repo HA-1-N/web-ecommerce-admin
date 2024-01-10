@@ -1,19 +1,50 @@
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
+import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
+import { changeFormSearch, changePageSearch, filterBrandAsync } from '@/features/brand/brand.slice';
+import { BrandModels } from '@/model/brand.model';
+import { ParamsModel } from '@/model/page.model';
 import { Button, Col, Form, Row } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const FormSearchBrand = () => {
-  const initialValues = {
+  const initialValues: BrandModels = {
     name: '',
   };
 
-  const onFinish = async (values: any) => {};
+  const dispatch = useAppDispatch();
+
+  const page = useAppSelector((state) => state?.brand?.pageSearch);
+  const formSearch = useAppSelector((state) => state?.brand?.formSearch);
+  const countBrand = useAppSelector((state) => state.brand?.countBrand);
+
+  const params: ParamsModel = {
+    page: page - 1,
+    size: DEFAULT_PAGE_SIZE,
+  };
+
+  useEffect(() => {
+    dispatch(filterBrandAsync({ body: formSearch, params }));
+  }, [page, dispatch, countBrand]);
+
+  const onFinish = async (values: any) => {
+    dispatch(changeFormSearch(values));
+    if (page === 1) {
+      await dispatch(filterBrandAsync({ body: values, params }));
+    } else {
+      dispatch(changePageSearch(1));
+    }
+  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  const onReset = async () => {};
+  const onReset = async () => {
+    dispatch(changeFormSearch(initialValues));
+    await dispatch(filterBrandAsync({ body: initialValues, params }));
+    dispatch(changePageSearch(1));
+  };
 
   return (
     <>

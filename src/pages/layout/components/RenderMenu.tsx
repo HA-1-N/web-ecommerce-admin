@@ -2,8 +2,8 @@ import { ROLE_CONSTANT_ENUM } from '@/constants/auth.constant';
 import { MenuItemsModels } from '@/model/sidebar.model';
 import { Menu } from 'antd';
 import SubMenu from 'antd/es/menu/SubMenu';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 interface RenderMenuProps {
   items: MenuItemsModels[];
@@ -14,6 +14,13 @@ const RenderMenu = (props: RenderMenuProps) => {
   const { items, userRoles } = props;
 
   const navigate = useNavigate();
+  const location = useLocation();
+  // const pathName = location?.pathname;
+
+  const [currentSelectedKeys, setCurrentSelectedKeys] = useState<string>('dashboard');
+  const [currentOpenKeys, setCurrentOpenKeys] = useState<string>('');
+
+  console.log('currentSelectedKeys...', currentSelectedKeys);
 
   const checkAccess = (item: MenuItemsModels, userRoles: ROLE_CONSTANT_ENUM[]): boolean => {
     if (
@@ -43,9 +50,27 @@ const RenderMenu = (props: RenderMenuProps) => {
   const handleClickItem = (item: MenuItemsModels) => {
     const pathName = item?.path;
     navigate(pathName);
+    setCurrentSelectedKeys(pathName);
   };
 
   const allowedItems = checkPermissions(items, userRoles);
+
+  useEffect(() => {
+    const pathname = location.pathname;
+    // console.log('pathname', pathname);
+
+    const foundItem = items.find(
+      (item) => item.path === pathname || item.children?.map((child) => child.path === pathname),
+    );
+    // console.log('foundItem', foundItem);
+
+    if (foundItem) {
+      setCurrentSelectedKeys(pathname);
+    } else {
+      // Đoạn này có thể xử lý việc active default khi không tìm thấy pathname trong items
+      // setCurrentSelectedKeys(defaultKey);
+    }
+  }, [location.pathname, items]);
 
   const renderSubMenu = (subMenu: MenuItemsModels) => {
     return (
@@ -66,7 +91,12 @@ const RenderMenu = (props: RenderMenuProps) => {
   };
 
   return (
-    <Menu theme="dark" mode="inline" defaultSelectedKeys={['dashboard']}>
+    <Menu
+      theme="dark"
+      mode="inline"
+      defaultSelectedKeys={[currentSelectedKeys]}
+      // defaultOpenKeys={[]}
+    >
       {allowedItems.map((item: MenuItemsModels) => {
         if (item.children) {
           return renderSubMenu(item);
