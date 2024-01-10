@@ -7,6 +7,7 @@ import ResetPassword from '@/pages/auth/reset-password/ResetPassword';
 import VerifyEmail from '@/pages/auth/verify-email/VerifyEmail';
 import ListBrand from '@/pages/brand/list-brand/ListBrand';
 import ListCategory from '@/pages/category/list-category/ListCategory';
+import ListColor from '@/pages/color/list-color/ListColor';
 import Dashboard from '@/pages/dashboard/Dashboard';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
@@ -98,6 +99,17 @@ const sizeRouter = {
   ],
 };
 
+const colorRouter = {
+  path: '/color',
+  eletment: <Outlet />,
+  children: [
+    {
+      path: '/color/list-color',
+      element: <ListColor />,
+    },
+  ],
+};
+
 const categoryRouter = {
   path: '/category',
   element: <Outlet />,
@@ -138,6 +150,7 @@ const router = createBrowserRouter([
       productRouter,
       productQuantityRouter,
       sizeRouter,
+      colorRouter,
       categoryRouter,
       brandRouter,
     ],

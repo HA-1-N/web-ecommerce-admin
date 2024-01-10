@@ -1,13 +1,13 @@
 import { Breadcrumb, Button } from 'antd';
-import { HomeOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
+import { HomeOutlined } from '@ant-design/icons';
 import BoxContainer from '@/components/BoxContainer';
 import HeaderTitle from '@/components/HeaderTitle';
-import FormSearchBrand from './FormSearchBrand';
-import ResultBrand from './ResultBrand';
-import ModalCreateBrand from '../modal/ModalCreateBrand';
+import FormSearchColor from './FormSearchColor';
+import ResultColor from './ResultColor';
+import ModalCreateColor from '../modal/ModalCreateColor';
 
-const ListBrand = () => {
+const ListColor = () => {
   const [isOpenModalCreate, setIsOpenModalCreate] = useState<boolean>(false);
 
   const handleClickCreate = () => {
@@ -17,10 +17,9 @@ const ListBrand = () => {
   const handleCancel = () => {
     setIsOpenModalCreate(false);
   };
-
   return (
     <>
-      <ModalCreateBrand isModalOpen={isOpenModalCreate} onCancel={handleCancel} />
+      <ModalCreateColor isModalOpen={isOpenModalCreate} onCancel={handleCancel} />
       <div className="flex items-center justify-between">
         <Breadcrumb
           items={[
@@ -29,22 +28,22 @@ const ListBrand = () => {
               title: <HomeOutlined />,
             },
             {
-              title: 'List Brand',
+              title: 'List Color',
             },
           ]}
         />
 
         <Button className="w-32" onClick={handleClickCreate}>
-          Create Brand
+          Create Color
         </Button>
       </div>
       <BoxContainer>
-        <HeaderTitle title="List Brand" />
-        <FormSearchBrand />
-        <ResultBrand />
+        <HeaderTitle title="List Color" />
+        <FormSearchColor />
+        <ResultColor />
       </BoxContainer>
     </>
   );
 };
 
-export default ListBrand;
+export default ListColor;
