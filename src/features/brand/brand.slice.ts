@@ -127,7 +127,6 @@ export const brandSlice = createSlice({
       state.totalPage = parseInt(action.payload.headers[TOTAL_COUNT_HEADER]) || 0;
       state.error = null;
     });
-
     builder.addCase(filterBrandAsync.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;

@@ -27,7 +27,7 @@ const FormSearchBrand = () => {
     dispatch(filterBrandAsync({ body: formSearch, params }));
   }, [page, dispatch, countBrand]);
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: BrandModels) => {
     dispatch(changeFormSearch(values));
     if (page === 1) {
       await dispatch(filterBrandAsync({ body: values, params }));

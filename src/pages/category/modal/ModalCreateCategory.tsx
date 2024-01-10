@@ -1,4 +1,10 @@
+import { createCategoryApi } from '@/api/category.api';
+import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
+import { incrementCountCategory } from '@/features/category/category.slice';
+import { openNotification } from '@/features/counter/counterSlice';
+import { CategoryModels } from '@/model/category.model';
+import { getMsgErrorApi } from '@/utils/form.util';
 import { Button, Col, Form, Modal, Row } from 'antd';
 import React, { useRef } from 'react';
 
@@ -11,10 +17,13 @@ interface ModalCreateCategoryProps {
 const ModalCreateCategory = (props: ModalCreateCategoryProps) => {
   const { onCancel, isModalOpen } = props;
 
-  const initialValues: any = {
+  const initialValues: CategoryModels = {
     name: '',
     description: '',
   };
+
+  const dispatch = useAppDispatch();
+  const [form] = Form.useForm();
 
   const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
@@ -22,9 +31,34 @@ const ModalCreateCategory = (props: ModalCreateCategoryProps) => {
     btnRef.current.click();
   };
 
-  const onFinish = async (values: any) => {};
+  const onFinish = async (values: CategoryModels) => {
+    createCategoryApi(values)
+      .then((res) => {
+        if (res) {
+          dispatch(incrementCountCategory());
+          dispatch(
+            openNotification({
+              message: 'Create Category Success',
+              type: 'success',
+            }),
+          );
+          form.resetFields();
+          onCancel();
+        }
+      })
+      .catch((err) => {
+        // console.log('err...', err);
+        dispatch(
+          openNotification({
+            message: getMsgErrorApi(err),
+            type: 'error',
+          }),
+        );
+      });
+  };
 
   const handleCancel = () => {
+    form.resetFields();
     onCancel();
   };
 
@@ -59,6 +93,7 @@ const ModalCreateCategory = (props: ModalCreateCategoryProps) => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={initialValues}
+            form={form}
           >
             <Row gutter={[16, 16]}>
               <Col span={24}>
