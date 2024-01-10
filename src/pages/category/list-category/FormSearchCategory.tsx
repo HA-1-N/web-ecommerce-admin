@@ -1,19 +1,49 @@
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
+import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
+import { changeFormSearch, changePageSearch, filterCategoryAsync } from '@/features/category/category.slice';
+import { CategoryModels } from '@/model/category.model';
+import { ParamsModel } from '@/model/page.model';
 import { Button, Col, Form, Row } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const FormSearchCategory = () => {
-  const initialValues = {
+  const initialValues: CategoryModels = {
     name: '',
   };
 
-  const onFinish = async (values: any) => {};
+  const dispatch = useAppDispatch();
+
+  const page = useAppSelector((state) => state?.category?.pageSearch);
+  const formSearch = useAppSelector((state) => state?.category?.formSearch);
+  const countCategory = useAppSelector((state) => state.category?.countCategory);
+  const params: ParamsModel = {
+    page: page - 1,
+    size: DEFAULT_PAGE_SIZE,
+  };
+
+  useEffect(() => {
+    dispatch(filterCategoryAsync({ body: formSearch, params }));
+  }, [page, dispatch, countCategory]);
+
+  const onFinish = async (values: CategoryModels) => {
+    dispatch(changeFormSearch(values));
+    if (page === 1) {
+      await dispatch(filterCategoryAsync({ body: values, params }));
+    } else {
+      dispatch(changePageSearch(1));
+    }
+  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  const onReset = async () => {};
+  const onReset = async () => {
+    dispatch(changeFormSearch(initialValues));
+    await dispatch(filterCategoryAsync({ body: initialValues, params }));
+    dispatch(changePageSearch(1));
+  };
 
   return (
     <>

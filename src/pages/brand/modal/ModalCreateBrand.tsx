@@ -93,6 +93,7 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={initialValues}
+            form={form}
           >
             <Row gutter={[16, 16]}>
               <Col span={24}>
