@@ -10,7 +10,7 @@ import { useAppDispatch } from '@/app/hook';
 import { FilterProductQuantityModels, ProductQuantityModels } from '@/model/product.model';
 import { ParamsModel } from '@/model/page.model';
 import { filterProductQuantityApi } from '@/api/product.api';
-import { DEFAULT_PAGE_SIZE } from '@/constants/page.constant';
+import { DEFAULT_PAGE_SIZE, TOTAL_COUNT_HEADER } from '@/constants/page.constant';
 import { openNotification } from '@/features/counter/counterSlice';
 import { getMsgErrorApi } from '@/utils/form.util';
 
@@ -26,11 +26,14 @@ const ListProductQuantity = () => {
   };
 
   const [productQuantityDetails, setProductQuantityDetails] = useState<ProductQuantityModels[]>([]);
+  const [page, setPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
   const getProductQuantity = async (values: FilterProductQuantityModels, params: ParamsModel) => {
     try {
       const res = await filterProductQuantityApi(values, params);
       setProductQuantityDetails(res?.data);
+      setTotalCount(parseInt(res?.headers[TOTAL_COUNT_HEADER]) || 0);
     } catch (error) {
       dispatch(
         openNotification({
@@ -43,7 +46,7 @@ const ListProductQuantity = () => {
 
   useEffect(() => {
     const params = {
-      page: 0,
+      page: page - 1,
       size: DEFAULT_PAGE_SIZE,
     };
     getProductQuantity(initialValues, params);
@@ -74,7 +77,7 @@ const ListProductQuantity = () => {
       <BoxContainer>
         <HeaderTitle title="List Product Quantity" />
         <FormSearchProductQuantity />
-        <ResultProductQuantity productQuantityDetails={productQuantityDetails} />
+        <ResultProductQuantity productQuantityDetails={productQuantityDetails} page={page} totalCount={totalCount} />
       </BoxContainer>
     </>
   );

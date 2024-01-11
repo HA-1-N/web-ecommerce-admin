@@ -80,6 +80,13 @@ const items: MenuItemsModels[] = [
     ],
   },
   {
+    key: 'color',
+    path: 'color/list-color',
+    icon: <VideoCameraOutlined />,
+    label: 'Color',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
+  {
     key: 'category',
     path: 'category',
     icon: <VideoCameraOutlined />,
