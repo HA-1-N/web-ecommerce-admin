@@ -1,3 +1,4 @@
+import { deleteProductApi, deleteProductQuantityApi } from '@/api/product.api';
 import { ChipStatus } from '@/components/ChipStatus';
 import PaginationTable from '@/components/Pagination';
 import { ProductQuantityModels } from '@/model/product.model';
@@ -7,10 +8,12 @@ import React from 'react';
 
 interface ResultProductQuantityProps {
   productQuantityDetails: ProductQuantityModels[];
+  page: number;
+  totalCount: number;
 }
 
 const ResultProductQuantity = (props: ResultProductQuantityProps) => {
-  const { productQuantityDetails } = props;
+  const { productQuantityDetails, page, totalCount } = props;
 
   const handleClickUpdate = (id: number | undefined) => {};
 
@@ -58,7 +61,7 @@ const ResultProductQuantity = (props: ResultProductQuantityProps) => {
             <Button size="small" onClick={() => handleClickUpdate(record?.id)}>
               Update
             </Button>
-            <Button size="small" danger>
+            <Button size="small" danger onClick={() => handleClickDelete(Number(record?.id))}>
               Delete
             </Button>
           </Space>
@@ -69,6 +72,7 @@ const ResultProductQuantity = (props: ResultProductQuantityProps) => {
 
   const data: any = productQuantityDetails?.map((item: ProductQuantityModels) => {
     return {
+      id: item.id,
       key: item.id,
       product: item?.product?.name,
       color: item?.color?.name,
@@ -80,12 +84,20 @@ const ResultProductQuantity = (props: ResultProductQuantityProps) => {
 
   const handleChangePage = (newPage: number) => {};
 
+  const handleClickDelete = (id: number) => {
+    if (id) {
+      deleteProductQuantityApi(id).then((res: any) => {
+        console.log(res);
+      });
+    }
+  };
+
   return (
     <>
       <div className="mt-10">
         <Table columns={columns} dataSource={data} pagination={false} scroll={{ x: 1500 }} bordered rowKey="id" />
         <div className="mt-6">
-          <PaginationTable page={1} total={10} onChangePage={handleChangePage} />
+          <PaginationTable page={page} total={totalCount} onChangePage={handleChangePage} />
         </div>
       </div>
     </>

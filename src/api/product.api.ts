@@ -52,3 +52,7 @@ export const createProductQuantityApi = (data: FormData) => {
 export const filterProductQuantityApi = (data: FilterProductQuantityModels, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.post('/product-quantity/filter', data, { params });
 };
+
+export const deleteProductQuantityApi = (id: number) => {
+  return HTTP_ADMIN_SERVICE.post(`/product-quantity/delete/${id}`);
+};
