@@ -20,7 +20,7 @@ const RenderMenu = (props: RenderMenuProps) => {
   const [currentSelectedKeys, setCurrentSelectedKeys] = useState<string>('dashboard');
   const [currentOpenKeys, setCurrentOpenKeys] = useState<string>('');
 
-  console.log('currentSelectedKeys...', currentSelectedKeys);
+  // console.log('currentSelectedKeys...', currentSelectedKeys);
 
   const checkAccess = (item: MenuItemsModels, userRoles: ROLE_CONSTANT_ENUM[]): boolean => {
     if (

@@ -118,6 +118,13 @@ const items: MenuItemsModels[] = [
       },
     ],
   },
+  {
+    key: 'banner',
+    path: 'banner/list-banner',
+    icon: <VideoCameraOutlined />,
+    label: 'Banner',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
 ];
 
 const LayoutApp = () => {
