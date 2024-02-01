@@ -56,3 +56,7 @@ export const filterProductQuantityApi = (data: FilterProductQuantityModels, para
 export const deleteProductQuantityApi = (id: number) => {
   return HTTP_ADMIN_SERVICE.post(`/product-quantity/delete/${id}`);
 };
+
+export const getProductByHotCategoryApi = (id: number, params: ParamsModel) => {
+  return HTTP_ADMIN_SERVICE.get(`/product/get-product-by-hot-category/${id}`, { params });
+};

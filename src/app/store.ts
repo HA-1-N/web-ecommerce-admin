@@ -6,6 +6,7 @@ import colorSlice from '@/features/color/color.slice';
 import brandSlice from '@/features/brand/brand.slice';
 import categorySlice from '@/features/category/category.slice';
 import productSlice from '@/features/product/product.slice';
+import hotCategorySlice from '@/features/hot-category/hot-category.slice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     brand: brandSlice,
     category: categorySlice,
     product: productSlice,
+    hotCategory: hotCategorySlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

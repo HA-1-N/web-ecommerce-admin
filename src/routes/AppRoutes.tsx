@@ -5,10 +5,15 @@ import ErrorPage from '@/pages/404/ErrorPage';
 import Login from '@/pages/auth/login/Login';
 import ResetPassword from '@/pages/auth/reset-password/ResetPassword';
 import VerifyEmail from '@/pages/auth/verify-email/VerifyEmail';
+import CreateBanner from '@/pages/banner/create/CreateBanner';
+import ListBanner from '@/pages/banner/list-banner/ListBanner';
+import UpdateBanner from '@/pages/banner/update/UpdateBanner';
 import ListBrand from '@/pages/brand/list-brand/ListBrand';
 import ListCategory from '@/pages/category/list-category/ListCategory';
 import ListColor from '@/pages/color/list-color/ListColor';
 import Dashboard from '@/pages/dashboard/Dashboard';
+import HotCategoryProductDetail from '@/pages/hot-category/hot-category-product-detail/HotCategoryProductDetail';
+import ListHotCategory from '@/pages/hot-category/list-hot-category/ListHotCategory';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
 import CreateProduct from '@/pages/product/create/CreateProduct';
@@ -132,6 +137,40 @@ const brandRouter = {
   ],
 };
 
+const bannerRouter = {
+  path: '/banner',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/banner/list-banner',
+      element: <ListBanner />,
+    },
+    {
+      path: '/banner/create-banner',
+      element: <CreateBanner />,
+    },
+    {
+      path: '/banner/update-banner/:id',
+      element: <UpdateBanner />,
+    },
+  ],
+};
+
+const hotCategoryRouter = {
+  path: '/hot-category',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/hot-category/list-hot-category',
+      element: <ListHotCategory />,
+    },
+    {
+      path: '/hot-category/:id/hot-category-product-detail',
+      element: <HotCategoryProductDetail />,
+    },
+  ],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -153,6 +192,8 @@ const router = createBrowserRouter([
       colorRouter,
       categoryRouter,
       brandRouter,
+      bannerRouter,
+      hotCategoryRouter,
     ],
   },
   {
