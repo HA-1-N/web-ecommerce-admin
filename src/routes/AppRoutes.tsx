@@ -12,6 +12,8 @@ import ListBrand from '@/pages/brand/list-brand/ListBrand';
 import ListCategory from '@/pages/category/list-category/ListCategory';
 import ListColor from '@/pages/color/list-color/ListColor';
 import Dashboard from '@/pages/dashboard/Dashboard';
+import HotCategoryProductDetail from '@/pages/hot-category/hot-category-product-detail/HotCategoryProductDetail';
+import ListHotCategory from '@/pages/hot-category/list-hot-category/ListHotCategory';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
 import CreateProduct from '@/pages/product/create/CreateProduct';
@@ -154,6 +156,21 @@ const bannerRouter = {
   ],
 };
 
+const hotCategoryRouter = {
+  path: '/hot-category',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/hot-category/list-hot-category',
+      element: <ListHotCategory />,
+    },
+    {
+      path: '/hot-category/:id/hot-category-product-detail',
+      element: <HotCategoryProductDetail />,
+    },
+  ],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -176,6 +193,7 @@ const router = createBrowserRouter([
       categoryRouter,
       brandRouter,
       bannerRouter,
+      hotCategoryRouter,
     ],
   },
   {

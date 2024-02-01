@@ -125,6 +125,13 @@ const items: MenuItemsModels[] = [
     label: 'Banner',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
+  {
+    key: 'hot-category',
+    path: 'hot-category/list-hot-category',
+    icon: <VideoCameraOutlined />,
+    label: 'Hot category',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
 ];
 
 const LayoutApp = () => {
