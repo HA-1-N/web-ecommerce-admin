@@ -1,3 +1,4 @@
+import { RcFile } from 'antd/es/upload';
 import { BrandModels } from './brand.model';
 import { CategoryModels } from './category.model';
 import { ColorModels } from './color.model';
@@ -22,6 +23,8 @@ export interface ProductModels {
 export interface ProductImageModels {
   id?: number;
   image?: string;
+  url?: string;
+  originFileObj?: RcFile;
 }
 
 export interface FilterProductModels {
@@ -46,7 +49,10 @@ export interface CreateProductModels {
   status?: any;
 }
 
-export interface UpdateProductModels extends CreateProductModels {}
+export interface UpdateProductModels extends CreateProductModels {
+  id?: number;
+  productDeleteImageIds?: number[];
+}
 
 export interface ProductIdNameModels {
   id?: number;
