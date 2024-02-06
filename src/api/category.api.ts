@@ -14,12 +14,24 @@ export const getCategoryByIdApi = (id: number | undefined) => {
   return HTTP_ADMIN_SERVICE.get(`/category/find-by-id/${id}`);
 };
 
-export const createCategoryApi = (body: CategoryModels) => {
-  return HTTP_ADMIN_SERVICE.post('/category/create', body);
+export const createCategoryApi = (body: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/category/create', body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
 };
 
-export const updateCategoryApi = (body: CategoryModels, id: number | undefined) => {
-  return HTTP_ADMIN_SERVICE.post(`/category/update/${id}`, body);
+export const updateCategoryApi = (body: FormData, id: number | undefined) => {
+  return HTTP_ADMIN_SERVICE.post(`/category/update/${id}`, body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
 };
 
 export const deleteCategoryApi = (id: number | undefined) => {
