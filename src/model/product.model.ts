@@ -61,12 +61,12 @@ export interface ProductIdNameModels {
 
 // Product Quantity
 export interface CreateProductQuantityModels {
-  id?: number;
-  quantity?: number;
-  productId?: number;
-  sizeId?: number;
-  colorId?: number;
-  status?: number;
+  id?: number | null;
+  quantity?: number | null;
+  productId?: number | null;
+  sizeId?: number | null;
+  colorId?: number | null;
+  status?: number | null;
 }
 
 export interface ProductQuantityModels {
@@ -76,8 +76,15 @@ export interface ProductQuantityModels {
   size?: SizeModel;
   color?: ColorModels;
   status?: number;
+  image?: any;
+  productQuantityImages?: any;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface UpdateProductQuantityModels extends CreateProductQuantityModels {
+  image?: any;
+  productQuantityDeleteImageIds?: any;
 }
 
 export interface FilterProductQuantityModels {

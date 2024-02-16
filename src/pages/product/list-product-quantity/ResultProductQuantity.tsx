@@ -5,6 +5,7 @@ import { ProductQuantityModels } from '@/model/product.model';
 import { Button, Space, Tag } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface ResultProductQuantityProps {
   productQuantityDetails: ProductQuantityModels[];
@@ -15,7 +16,11 @@ interface ResultProductQuantityProps {
 const ResultProductQuantity = (props: ResultProductQuantityProps) => {
   const { productQuantityDetails, page, totalCount } = props;
 
-  const handleClickUpdate = (id: number | undefined) => {};
+  const navigate = useNavigate();
+
+  const handleClickUpdate = (id: number | undefined) => {
+    navigate(`/product/update-product-quantity/${id}`);
+  };
 
   const columns: ColumnsType<ProductQuantityModels> = [
     {
