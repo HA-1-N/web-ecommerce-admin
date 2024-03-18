@@ -15,6 +15,7 @@ import Dashboard from '@/pages/dashboard/Dashboard';
 import HotCategoryProductDetail from '@/pages/hot-category/hot-category-product-detail/HotCategoryProductDetail';
 import ListHotCategory from '@/pages/hot-category/list-hot-category/ListHotCategory';
 import LayoutApp from '@/pages/layout/LayoutApp';
+import ListPaymentType from '@/pages/payment-type/ListPaymentType';
 import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
 import CreateProduct from '@/pages/product/create/CreateProduct';
 import ListProductQuantity from '@/pages/product/list-product-quantity/ListProductQuantity';
@@ -171,6 +172,12 @@ const hotCategoryRouter = {
   ],
 };
 
+const paymetTypeRouter = {
+  path: '/payment-type',
+  element: <ListPaymentType />,
+  children: [],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -194,6 +201,7 @@ const router = createBrowserRouter([
       brandRouter,
       bannerRouter,
       hotCategoryRouter,
+      paymetTypeRouter,
     ],
   },
   {

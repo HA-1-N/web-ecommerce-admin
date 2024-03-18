@@ -132,6 +132,13 @@ const items: MenuItemsModels[] = [
     label: 'Hot category',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
+  {
+    key: 'payment-type',
+    path: '/payment-type',
+    icon: <VideoCameraOutlined />,
+    label: 'Payment Type',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
 ];
 
 const LayoutApp = () => {

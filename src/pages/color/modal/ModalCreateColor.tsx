@@ -77,7 +77,7 @@ const ModalCreateColor = (props: ModalCreateColorProps) => {
   return (
     <>
       <Modal
-        title="Create Brand"
+        title="Create Color"
         open={isModalOpen}
         onCancel={onCancel}
         footer={[
