@@ -33,7 +33,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-user',
-        path: 'user/list-user',
+        path: '/user/list-user',
         icon: <UserOutlined />,
         label: 'List User',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -49,14 +49,14 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-product',
-        path: 'product/list-product',
+        path: '/product/list-product',
         icon: <UploadOutlined />,
         label: 'List Product',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
       },
       {
         key: 'list-product-quantity',
-        path: 'product/list-product-quantity',
+        path: '/product/list-product-quantity',
         icon: <UploadOutlined />,
         label: 'List Product Quantity',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -72,7 +72,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-size',
-        path: 'size/list-size',
+        path: '/size/list-size',
         icon: <UploadOutlined />,
         label: 'List-size',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -81,7 +81,7 @@ const items: MenuItemsModels[] = [
   },
   {
     key: 'color',
-    path: 'color/list-color',
+    path: '/color/list-color',
     icon: <VideoCameraOutlined />,
     label: 'Color',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -95,7 +95,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-category',
-        path: 'category/list-category',
+        path: '/category/list-category',
         icon: <UploadOutlined />,
         label: 'List-category',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -111,7 +111,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-brand',
-        path: 'brand/list-brand',
+        path: '/brand/list-brand',
         icon: <UploadOutlined />,
         label: 'List-brand',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -120,14 +120,14 @@ const items: MenuItemsModels[] = [
   },
   {
     key: 'banner',
-    path: 'banner/list-banner',
+    path: '/banner/list-banner',
     icon: <VideoCameraOutlined />,
     label: 'Banner',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
   {
     key: 'hot-category',
-    path: 'hot-category/list-hot-category',
+    path: '/hot-category/list-hot-category',
     icon: <VideoCameraOutlined />,
     label: 'Hot category',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -147,6 +147,7 @@ const LayoutApp = () => {
   return (
     <Layout>
       <Sider
+        theme="light"
         width={250}
         style={{
           zIndex: '10',
