@@ -1,3 +1,4 @@
+import { RcFile } from 'antd/es/upload';
 import { BrandModels } from './brand.model';
 import { CategoryModels } from './category.model';
 import { ColorModels } from './color.model';
@@ -22,6 +23,8 @@ export interface ProductModels {
 export interface ProductImageModels {
   id?: number;
   image?: string;
+  url?: string;
+  originFileObj?: RcFile;
 }
 
 export interface FilterProductModels {
@@ -46,7 +49,10 @@ export interface CreateProductModels {
   status?: any;
 }
 
-export interface UpdateProductModels extends CreateProductModels {}
+export interface UpdateProductModels extends CreateProductModels {
+  id?: number;
+  productDeleteImageIds?: number[];
+}
 
 export interface ProductIdNameModels {
   id?: number;
@@ -55,12 +61,12 @@ export interface ProductIdNameModels {
 
 // Product Quantity
 export interface CreateProductQuantityModels {
-  id?: number;
-  quantity?: number;
-  productId?: number;
-  sizeId?: number;
-  colorId?: number;
-  status?: number;
+  id?: number | null;
+  quantity?: number | null;
+  productId?: number | null;
+  sizeId?: number | null;
+  colorId?: number | null;
+  status?: number | null;
 }
 
 export interface ProductQuantityModels {
@@ -70,8 +76,15 @@ export interface ProductQuantityModels {
   size?: SizeModel;
   color?: ColorModels;
   status?: number;
+  image?: any;
+  productQuantityImages?: any;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface UpdateProductQuantityModels extends CreateProductQuantityModels {
+  image?: any;
+  productQuantityDeleteImageIds?: any;
 }
 
 export interface FilterProductQuantityModels {

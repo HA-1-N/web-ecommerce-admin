@@ -44,7 +44,7 @@ const FormCreateProduct = () => {
   };
 
   const getAllBrand = async () => {
-    dispatch(getOptionBrandAsync);
+    dispatch(getOptionBrandAsync());
   };
 
   useEffect(() => {
@@ -279,8 +279,9 @@ const FormCreateProduct = () => {
                   beforeUpload={checkImageSizeAndRatio}
                   accept="image/*"
                   customRequest={dummyRequest}
+                  maxCount={2}
                 >
-                  {fileList.length >= 8 ? null : uploadButton}
+                  {fileList.length >= 2 ? null : uploadButton}
                 </Upload>
               </Form.Item>
             </Col>

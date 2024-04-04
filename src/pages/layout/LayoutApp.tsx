@@ -33,7 +33,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-user',
-        path: 'user/list-user',
+        path: '/user/list-user',
         icon: <UserOutlined />,
         label: 'List User',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -49,14 +49,14 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-product',
-        path: 'product/list-product',
+        path: '/product/list-product',
         icon: <UploadOutlined />,
         label: 'List Product',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
       },
       {
         key: 'list-product-quantity',
-        path: 'product/list-product-quantity',
+        path: '/product/list-product-quantity',
         icon: <UploadOutlined />,
         label: 'List Product Quantity',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -72,7 +72,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-size',
-        path: 'size/list-size',
+        path: '/size/list-size',
         icon: <UploadOutlined />,
         label: 'List-size',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -81,7 +81,7 @@ const items: MenuItemsModels[] = [
   },
   {
     key: 'color',
-    path: 'color/list-color',
+    path: '/color/list-color',
     icon: <VideoCameraOutlined />,
     label: 'Color',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -95,7 +95,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-category',
-        path: 'category/list-category',
+        path: '/category/list-category',
         icon: <UploadOutlined />,
         label: 'List-category',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -111,7 +111,7 @@ const items: MenuItemsModels[] = [
     children: [
       {
         key: 'list-brand',
-        path: 'brand/list-brand',
+        path: '/brand/list-brand',
         icon: <UploadOutlined />,
         label: 'List-brand',
         roles: [ROLE_CONSTANT_ENUM.ADMIN],
@@ -120,18 +120,116 @@ const items: MenuItemsModels[] = [
   },
   {
     key: 'banner',
-    path: 'banner/list-banner',
+    path: '/banner/list-banner',
     icon: <VideoCameraOutlined />,
     label: 'Banner',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
   {
     key: 'hot-category',
-    path: 'hot-category/list-hot-category',
+    path: '/hot-category/list-hot-category',
     icon: <VideoCameraOutlined />,
     label: 'Hot category',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
+  {
+    key: 'payment-type',
+    path: '/payment-type',
+    icon: <VideoCameraOutlined />,
+    label: 'Payment Type',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
+  {
+    key: 'shipping-method',
+    path: '/shipping-method',
+    icon: <VideoCameraOutlined />,
+    label: 'Shipping Method',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
+  {
+    key: 'order-status',
+    path: '/order-status',
+    icon: <VideoCameraOutlined />,
+    label: 'Order Status',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
+  // {
+  //   key: 'order',
+  //   path: '/order',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Order',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'review',
+  //   path: '/review',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Review',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'role',
+  //   path: '/role',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Role',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'permission',
+  //   path: '/permission',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Permission',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'setting',
+  //   path: '/setting',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Setting',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'report',
+  //   path: '/report',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Report',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'notification',
+  //   path: '/notification',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Notification',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'contact',
+  //   path: '/contact',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Contact',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'faq',
+  //   path: '/faq',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Faq',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'blog',
+  //   path: '/blog',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Blog',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
+  // {
+  //   key: 'comment',
+  //   path: '/comment',
+  //   icon: <VideoCameraOutlined />,
+  //   label: 'Comment',
+  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  // },
 ];
 
 const LayoutApp = () => {
@@ -147,6 +245,7 @@ const LayoutApp = () => {
   return (
     <Layout>
       <Sider
+        theme="light"
         width={250}
         style={{
           zIndex: '10',

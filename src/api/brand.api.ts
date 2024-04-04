@@ -14,12 +14,24 @@ export const getBrandByIdApi = (id: number | undefined) => {
   return HTTP_ADMIN_SERVICE.get(`/brand/find-by-id/${id}`);
 };
 
-export const createBrandApi = (body: BrandModels) => {
-  return HTTP_ADMIN_SERVICE.post('/brand/create', body);
+export const createBrandApi = (body: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/brand/create', body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
 };
 
-export const updateBrandApi = (body: BrandModels, id: number | undefined) => {
-  return HTTP_ADMIN_SERVICE.post(`/brand/update/${id}`, body);
+export const updateBrandApi = (body: FormData, id: number | undefined) => {
+  return HTTP_ADMIN_SERVICE.post(`/brand/update/${id}`, body, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
 };
 
 export const deleteBrandApi = (id: number | undefined) => {

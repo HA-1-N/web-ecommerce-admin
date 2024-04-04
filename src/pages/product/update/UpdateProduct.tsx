@@ -47,7 +47,7 @@ const UpdateProduct = () => {
       <Button onClick={handleClickReturn}>Return</Button>
       <BoxContainer>
         <HeaderTitle title="Update Product" />
-        {productDetail ? <FormUpdateProduct productDetail={productDetail} /> : <></>}
+        {productDetail ? <FormUpdateProduct productDetail={productDetail} id={id} /> : <></>}
       </BoxContainer>
     </>
   );

@@ -1,28 +1,37 @@
-import { CreateProductModels, ProductModels, UpdateProductModels } from '@/model/product.model';
+import { CreateProductModels, ProductImageModels, ProductModels, UpdateProductModels } from '@/model/product.model';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, Modal, Row, Upload, UploadFile, UploadProps } from 'antd';
 import InputForm from '@/components/form/InputForm';
 import TextAreaForm from '@/components/form/TextAreaForm';
 import SelectForm from '@/components/form/SelectForm';
-import { filterOption } from '@/utils/form.util';
+import { filterOption, getMsgErrorApi } from '@/utils/form.util';
 import { useAppDispatch, useAppSelector } from '@/app/hook';
 import { openNotification } from '@/features/counter/counterSlice';
 import { RcFile } from 'antd/es/upload';
 import { PlusOutlined } from '@ant-design/icons';
 import { getOptionBrandAsync } from '@/features/brand/brand.slice';
 import { getOptionCategoryAsync } from '@/features/category/category.slice';
+import { updateProductApi } from '@/api/product.api';
+import { useNavigate } from 'react-router-dom';
 
 interface FormUpdateProductProps {
   productDetail: ProductModels | null;
+  id: number;
 }
 
 const FormUpdateProduct = (props: FormUpdateProductProps) => {
-  const { productDetail } = props;
+  const { productDetail, id } = props;
+
+  const [form] = Form.useForm();
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const optionBrand = useAppSelector((state) => state.brand?.optionBrand);
   const optionCategory = useAppSelector((state) => state.category?.optionCategory);
+
+  const getListImageProductId = productDetail?.productImages?.map((item: ProductImageModels) => item?.id);
+  const getStatus = productDetail?.status;
 
   const initialValues = {
     name: productDetail?.name,
@@ -30,13 +39,10 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
     description: productDetail?.description,
     brandId: productDetail?.brand?.id,
     categoryId: productDetail?.category?.id,
-    image: [],
+    image: productDetail?.productImages,
   };
 
-  const [imageList, setImageList] = useState<any>(productDetail?.productImages);
-  console.log('imageList', imageList);
-
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[] | any>(productDetail?.productImages);
   const [previewOpen, setPreviewOpen] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
@@ -54,8 +60,74 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
     getAllCategory();
   }, []);
 
+  const buildBodyUpdate = (values: UpdateProductModels) => {
+    const filterProductImageId = values?.image
+      ?.filter((item: ProductImageModels) => {
+        if (item?.id) {
+          return getListImageProductId?.includes(item?.id);
+        }
+      })
+      ?.map((item: ProductImageModels) => item?.id);
+
+    const productDeleteImageIds = getListImageProductId?.filter(
+      (item: number | undefined) => !filterProductImageId?.includes(item),
+    );
+
+    const newValues = {
+      id: id,
+      name: values?.name,
+      price: values?.price,
+      description: values?.description,
+      brandId: values?.brandId,
+      categoryId: values?.categoryId,
+      status: getStatus,
+      productDeleteImageIds: productDeleteImageIds,
+    };
+
+    return newValues;
+  };
+
   const onFinish = async (values: UpdateProductModels) => {
-    console.log('Success:', values);
+    // console.log('Success:', values);
+    const formData = new FormData();
+    const body = buildBodyUpdate(values);
+    const checkOriginFileObj = values?.image?.map((item: ProductImageModels) => (item?.originFileObj ? true : false));
+
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(body)], {
+        type: 'application/json',
+      }),
+    );
+
+    if (checkOriginFileObj?.includes(true)) {
+      values?.image?.forEach((file: ProductImageModels) => {
+        if (file?.originFileObj) {
+          formData.append('files', file?.originFileObj as Blob);
+        }
+      });
+    }
+
+    updateProductApi(formData)
+      .then((res) => {
+        if (res) {
+          dispatch(
+            openNotification({
+              type: 'success',
+              message: 'Update product success!',
+            }),
+          );
+          navigate('/product/list-product');
+        }
+      })
+      .catch((err) => {
+        dispatch(
+          openNotification({
+            type: 'error',
+            message: getMsgErrorApi(err),
+          }),
+        );
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -63,7 +135,8 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
   };
 
   const onReset = () => {
-    // form.resetFields();
+    setFileList(productDetail?.productImages);
+    form.resetFields();
   };
 
   const getBase64 = (file: RcFile): Promise<string> =>
@@ -94,7 +167,10 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
     setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
   };
 
-  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => setFileList(newFileList);
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) => {
+    form.setFieldValue('image', newFileList);
+    setFileList(newFileList);
+  };
 
   const uploadButton = (
     <div>
@@ -158,6 +234,7 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
           colon={false}
           layout="vertical"
           initialValues={initialValues}
+          form={form}
         >
           <Row gutter={[16, 16]}>
             <Col span={12}>
@@ -242,9 +319,13 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
                   beforeUpload={checkImageSizeAndRatio}
                   accept="image/*"
                   customRequest={dummyRequest}
+                  maxCount={2}
                 >
-                  {fileList.length >= 8 ? null : uploadButton}
+                  {fileList.length >= 2 ? null : uploadButton}
                 </Upload>
+                <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal>
               </Form.Item>
             </Col>
           </Row>

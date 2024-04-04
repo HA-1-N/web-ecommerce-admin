@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Space, Upload, UploadFile } from 'antd';
 import InputForm from '@/components/form/InputForm';
 import { openNotification } from '@/features/counter/counterSlice';
 import { useAppDispatch } from '@/app/hook';
-import { PlusCircleOutlined, MinusCircleOutlined, InboxOutlined, CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import UploadFileIcon from '@/components/icons/UploadFileIcon';
 import { useNavigate } from 'react-router-dom';
 import { CreateBannerModels } from '@/model/banner.model';

@@ -1,68 +1,64 @@
-import { createColorApi } from '@/api/color.api';
+import { createShippingMethodApi } from '@/api/shipping-method.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
-import { incrementCountColor } from '@/features/color/color.slice';
+import InputNumberForm from '@/components/form/InputNumberForm';
 import { openNotification } from '@/features/counter/counterSlice';
-import { ColorModels } from '@/model/color.model';
+import { incrementCountShippingMethod } from '@/features/shipping-method/shipping-method.slice';
+import { ShippingMethodModels } from '@/model/shipping-method.model';
 import { getMsgErrorApi } from '@/utils/form.util';
-import { Button, Col, ColorPicker, Form, Modal, Row } from 'antd';
-import { Color } from 'antd/es/color-picker';
+import { Button, Col, Form, Modal, Row } from 'antd';
 import React, { useRef } from 'react';
 
-interface ModalCreateColorProps {
+interface ModalCreateShippingMethodProps {
   isModalOpen: boolean;
   onCancel: () => void;
   [key: string]: unknown;
 }
 
-const ModalCreateColor = (props: ModalCreateColorProps) => {
+const ModalCreateShippingMethod = (props: ModalCreateShippingMethodProps) => {
   const { isModalOpen, onCancel, ...otherProps } = props;
 
-  const initialValues: ColorModels = {
-    name: '',
-    code: '#000000',
+  const initialValues: ShippingMethodModels = {
+    method: '',
+    price: 0,
   };
+
+  const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
-
-  const btnRef = useRef<HTMLButtonElement | HTMLInputElement | null | any>(null);
 
   const handleOk = () => {
     btnRef.current.click();
   };
 
-  const onFinish = async (values: ColorModels) => {
-    const getCode = values?.code as Color;
-    const formatCode = getCode?.toHexString();
-    const newValues = {
-      ...values,
-      code: formatCode,
-    };
-
-    createColorApi(newValues)
-      .then((res) => {
-        if (res) {
-          dispatch(incrementCountColor());
-          dispatch(
-            openNotification({
-              message: 'Create Color Success',
-              type: 'success',
-            }),
-          );
-          form.resetFields();
-          onCancel();
-        }
-      })
-      .catch((err) => {
-        // console.log('err...', err);
+  const onFinish = async (values: ShippingMethodModels) => {
+    // console.log('values...', values);
+    try {
+      const res = await createShippingMethodApi(values);
+      if (res) {
+        dispatch(incrementCountShippingMethod());
         dispatch(
           openNotification({
-            message: getMsgErrorApi(err),
-            type: 'error',
+            message: 'Create Shipping Method Success',
+            type: 'success',
           }),
         );
-      });
+        form.resetFields();
+        onCancel();
+      }
+    } catch (error) {
+      dispatch(
+        openNotification({
+          message: getMsgErrorApi(error),
+          type: 'error',
+        }),
+      );
+    }
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
   };
 
   const handleCancel = () => {
@@ -70,14 +66,10 @@ const ModalCreateColor = (props: ModalCreateColorProps) => {
     onCancel();
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
   return (
     <>
       <Modal
-        title="Create Color"
+        title="Create Shipping Method"
         open={isModalOpen}
         onCancel={onCancel}
         footer={[
@@ -106,25 +98,35 @@ const ModalCreateColor = (props: ModalCreateColorProps) => {
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <InputForm
-                  label="Name"
-                  placeholder="Enter Name"
-                  name="name"
+                  label="Method"
+                  placeholder="Enter Method"
+                  name="method"
                   rules={[
                     {
                       required: true,
-                      message: 'Please input your name!',
+                      message: 'Please input your method!',
                     },
                   ]}
                 />
               </Col>
 
               <Col span={24}>
-                <Form.Item name="code" label="Color code" rules={[{ required: true, message: 'Color is required!' }]}>
-                  <ColorPicker showText format={'hex'} />
-                </Form.Item>
+                <InputNumberForm
+                  label="Price"
+                  placeholder="Enter Price"
+                  name="price"
+                  min={0}
+                  max={1000000}
+                  className="w-full"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please input your price!',
+                    },
+                  ]}
+                />
               </Col>
             </Row>
-
             <Form.Item className="hidden" wrapperCol={{ offset: 8, span: 8 }}>
               <Button type="primary" size="large" htmlType="submit" className="w-32" ref={btnRef}>
                 Submit
@@ -137,4 +139,4 @@ const ModalCreateColor = (props: ModalCreateColorProps) => {
   );
 };
 
-export default ModalCreateColor;
+export default ModalCreateShippingMethod;

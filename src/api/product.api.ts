@@ -49,6 +49,16 @@ export const createProductQuantityApi = (data: FormData) => {
   });
 };
 
+export const updateProductQuantityApi = (data: FormData) => {
+  return HTTP_ADMIN_SERVICE.post('/product-quantity/update', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      type: 'formData',
+    },
+  });
+};
+
 export const filterProductQuantityApi = (data: FilterProductQuantityModels, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.post('/product-quantity/filter', data, { params });
 };
@@ -59,4 +69,8 @@ export const deleteProductQuantityApi = (id: number) => {
 
 export const getProductByHotCategoryApi = (id: number, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.get(`/product/get-product-by-hot-category/${id}`, { params });
+};
+
+export const getProductCategoryByIdApi = (id: number) => {
+  return HTTP_ADMIN_SERVICE.get(`/product-quantity/get-by-id/${id}`);
 };
