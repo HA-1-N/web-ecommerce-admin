@@ -5,10 +5,26 @@ import ErrorPage from '@/pages/404/ErrorPage';
 import Login from '@/pages/auth/login/Login';
 import ResetPassword from '@/pages/auth/reset-password/ResetPassword';
 import VerifyEmail from '@/pages/auth/verify-email/VerifyEmail';
+import CreateBanner from '@/pages/banner/create/CreateBanner';
+import ListBanner from '@/pages/banner/list-banner/ListBanner';
+import UpdateBanner from '@/pages/banner/update/UpdateBanner';
+import ListBrand from '@/pages/brand/list-brand/ListBrand';
+import ListCategory from '@/pages/category/list-category/ListCategory';
+import ListColor from '@/pages/color/list-color/ListColor';
 import Dashboard from '@/pages/dashboard/Dashboard';
+import HotCategoryProductDetail from '@/pages/hot-category/hot-category-product-detail/HotCategoryProductDetail';
+import ListHotCategory from '@/pages/hot-category/list-hot-category/ListHotCategory';
 import LayoutApp from '@/pages/layout/LayoutApp';
-import Product from '@/pages/product/Product';
-import ProductOne from '@/pages/product/ProductOne';
+import OrderStatus from '@/pages/order-status/OrderStatus';
+import ListPaymentType from '@/pages/payment-type/ListPaymentType';
+import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
+import CreateProduct from '@/pages/product/create/CreateProduct';
+import ListProductQuantity from '@/pages/product/list-product-quantity/ListProductQuantity';
+import ListProduct from '@/pages/product/list-product/ListProduct';
+import UpdateProductQuantity from '@/pages/product/update-product-quantity/UpdateProductQuantity';
+import UpdateProduct from '@/pages/product/update/UpdateProduct';
+import ShippingMethod from '@/pages/shipping-method/ShippingMethod';
+import ListSize from '@/pages/size/list-size/ListSize';
 import ListUser from '@/pages/user/list-user/ListUser';
 import React from 'react';
 import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -30,8 +46,40 @@ const productRouter = {
   element: <Outlet />,
   children: [
     {
-      path: '/product/product-1',
-      element: <ProductOne />,
+      path: '/product/list-product',
+      element: <ListProduct />,
+      children: [],
+    },
+    {
+      path: '/product/create-product',
+      element: <CreateProduct />,
+      children: [],
+    },
+    {
+      path: '/product/update-product/:id',
+      element: <UpdateProduct />,
+      children: [],
+    },
+  ],
+};
+
+const productQuantityRouter = {
+  path: '/product',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/product/list-product-quantity',
+      element: <ListProductQuantity />,
+      children: [],
+    },
+    {
+      path: '/product/create-product-quantity',
+      element: <CreateProductQuantity />,
+      children: [],
+    },
+    {
+      path: '/product/update-product-quantity/:id',
+      element: <UpdateProductQuantity />,
       children: [],
     },
   ],
@@ -48,6 +96,102 @@ const userRouter = {
   ],
 };
 
+const sizeRouter = {
+  path: '/size',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/size/list-size',
+      element: <ListSize />,
+    },
+  ],
+};
+
+const colorRouter = {
+  path: '/color',
+  eletment: <Outlet />,
+  children: [
+    {
+      path: '/color/list-color',
+      element: <ListColor />,
+    },
+  ],
+};
+
+const categoryRouter = {
+  path: '/category',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/category/list-category',
+      element: <ListCategory />,
+    },
+  ],
+};
+
+const brandRouter = {
+  path: '/brand',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/brand/list-brand',
+      element: <ListBrand />,
+    },
+  ],
+};
+
+const bannerRouter = {
+  path: '/banner',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/banner/list-banner',
+      element: <ListBanner />,
+    },
+    {
+      path: '/banner/create-banner',
+      element: <CreateBanner />,
+    },
+    {
+      path: '/banner/update-banner/:id',
+      element: <UpdateBanner />,
+    },
+  ],
+};
+
+const hotCategoryRouter = {
+  path: '/hot-category',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/hot-category/list-hot-category',
+      element: <ListHotCategory />,
+    },
+    {
+      path: '/hot-category/:id/hot-category-product-detail',
+      element: <HotCategoryProductDetail />,
+    },
+  ],
+};
+
+const paymetTypeRouter = {
+  path: '/payment-type',
+  element: <ListPaymentType />,
+  children: [],
+};
+
+const shippingMethodRouter = {
+  path: '/shipping-method',
+  element: <ShippingMethod />,
+  children: [],
+};
+
+const orderStatusRouter = {
+  path: '/order-status',
+  element: <OrderStatus />,
+  children: [],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -60,7 +204,21 @@ const router = createBrowserRouter([
         </AuthorizationRouter>
       </AuthenticationRouter>
     ),
-    children: [dashboardRouter, productRouter, userRouter],
+    children: [
+      dashboardRouter,
+      userRouter,
+      productRouter,
+      productQuantityRouter,
+      sizeRouter,
+      colorRouter,
+      categoryRouter,
+      brandRouter,
+      bannerRouter,
+      hotCategoryRouter,
+      paymetTypeRouter,
+      shippingMethodRouter,
+      orderStatusRouter,
+    ],
   },
   {
     path: '/verify-email',
