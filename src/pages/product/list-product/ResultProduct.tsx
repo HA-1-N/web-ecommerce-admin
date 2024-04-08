@@ -38,6 +38,9 @@ const ResultProduct = (props: ResultProductProps) => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
+      render: (value: number, record: ProductModels) => {
+        return <>{value?.toLocaleString('en-US')}</>;
+      },
     },
     {
       title: 'Quantity',

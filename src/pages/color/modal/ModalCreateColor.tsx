@@ -33,13 +33,12 @@ const ModalCreateColor = (props: ModalCreateColorProps) => {
   };
 
   const onFinish = async (values: ColorModels) => {
-    const getCode = values?.code as Color;
-    const formatCode = getCode?.toHexString();
+    const getCode = typeof values?.code === 'string' ? values?.code : (values?.code as Color);
+    const formatCode = typeof getCode === 'string' ? getCode.toString() : getCode?.toHexString();
     const newValues = {
       ...values,
       code: formatCode,
     };
-
     createColorApi(newValues)
       .then((res) => {
         if (res) {

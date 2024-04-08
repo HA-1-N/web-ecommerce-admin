@@ -92,6 +92,7 @@ const ModalUpdateBrand = (props: ModalUpdateBrandProps) => {
 
   const handleCancel = () => {
     form.resetFields();
+    setUploadedImage(brandDetail?.image);
     onCancel();
   };
 

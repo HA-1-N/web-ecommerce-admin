@@ -5,7 +5,7 @@ import { SizeModel } from '@/model/size.model';
 import { Button, Space, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
-import ModalUpdateSize from '../modal/ModalUpdateSize';
+import ModalUpdateSize from '../modal/ModalUpdatesize';
 
 const ResultSize = () => {
   const columns: ColumnsType<SizeModel> = [
