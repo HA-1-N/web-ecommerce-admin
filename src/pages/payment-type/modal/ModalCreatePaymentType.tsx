@@ -10,11 +10,13 @@ import React, { useRef } from 'react';
 interface ModalCreatePaymentTypeProps {
   isModalOpen: boolean;
   onCancel: () => void;
+  countPaymentType: number;
+  setCountPaymentType: React.Dispatch<React.SetStateAction<number>>;
   [key: string]: unknown;
 }
 
 const ModalCreatePaymentType = (props: ModalCreatePaymentTypeProps) => {
-  const { isModalOpen, onCancel, ...otherProps } = props;
+  const { isModalOpen, onCancel, countPaymentType, setCountPaymentType, ...otherProps } = props;
 
   const initialValues: PaymentTypeModels = {
     type: '',
@@ -39,6 +41,8 @@ const ModalCreatePaymentType = (props: ModalCreatePaymentTypeProps) => {
               type: 'success',
             }),
           );
+          const newCountPaymentType = countPaymentType + 1;
+          setCountPaymentType(newCountPaymentType);
           form.resetFields();
           onCancel();
         }
