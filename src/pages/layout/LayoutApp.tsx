@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable jsx-a11y/alt-text */
 import Sider from 'antd/es/layout/Sider';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -153,13 +155,13 @@ const items: MenuItemsModels[] = [
     label: 'Order Status',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
-  // {
-  //   key: 'order',
-  //   path: '/order',
-  //   icon: <VideoCameraOutlined />,
-  //   label: 'Order',
-  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
-  // },
+  {
+    key: 'order',
+    path: '/order',
+    icon: <VideoCameraOutlined />,
+    label: 'Order',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
   // {
   //   key: 'review',
   //   path: '/review',
@@ -261,7 +263,18 @@ const LayoutApp = () => {
         collapsible
         collapsed={collapsed}
       >
-        <div className="demo-logo-vertical" />
+        <img
+          className="demo-logo-vertical"
+          src="https://img.freepik.com/free-vector/flat-design-cross-country-design-logo_23-2149481837.jpg"
+          alt="image"
+          style={{
+            width: '100%',
+            height: 'auto',
+            padding: '20px 0',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        />
         <RenderMenu items={items} userRoles={userRoles} />
       </Sider>
       <Layout>

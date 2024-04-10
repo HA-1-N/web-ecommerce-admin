@@ -16,6 +16,8 @@ import HotCategoryProductDetail from '@/pages/hot-category/hot-category-product-
 import ListHotCategory from '@/pages/hot-category/list-hot-category/ListHotCategory';
 import LayoutApp from '@/pages/layout/LayoutApp';
 import OrderStatus from '@/pages/order-status/OrderStatus';
+import OrderDetail from '@/pages/order/detail/OrderDetail';
+import ListOrder from '@/pages/order/list-order/ListOrder';
 import ListPaymentType from '@/pages/payment-type/ListPaymentType';
 import CreateProductQuantity from '@/pages/product/create-product-quantity/CreateProductQuantity';
 import CreateProduct from '@/pages/product/create/CreateProduct';
@@ -192,6 +194,21 @@ const orderStatusRouter = {
   children: [],
 };
 
+const orderRouter = {
+  path: '',
+  element: <Outlet />,
+  children: [
+    {
+      path: '/order',
+      element: <ListOrder />,
+    },
+    {
+      path: '/order/:id',
+      element: <OrderDetail />,
+    },
+  ],
+};
+
 const router = createBrowserRouter([
   { path: '/login', element: <Login /> },
   {
@@ -218,6 +235,7 @@ const router = createBrowserRouter([
       paymetTypeRouter,
       shippingMethodRouter,
       orderStatusRouter,
+      orderRouter,
     ],
   },
   {
