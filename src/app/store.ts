@@ -9,6 +9,7 @@ import productSlice from '@/features/product/product.slice';
 import hotCategorySlice from '@/features/hot-category/hot-category.slice';
 import shippingMethodSlice from '@/features/shipping-method/shipping-method.slice';
 import orderStatusSlice from '@/features/order-status/order-status.slice';
+import orderSlice from '@/features/order/order.slice';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     hotCategory: hotCategorySlice,
     shippingMethod: shippingMethodSlice,
     orderStatus: orderStatusSlice,
+    order: orderSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

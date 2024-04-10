@@ -9,3 +9,7 @@ export const createOrderStatusApi = (body: OrderStatusModels) => {
 export const filterOrderStatusApi = (body: OrderStatusModels, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.post('/order-status/filter', body, { params });
 };
+
+export const getAllOrderStatusApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/order-status/get-all');
+};
