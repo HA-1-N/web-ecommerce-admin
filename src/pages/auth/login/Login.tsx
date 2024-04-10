@@ -4,7 +4,7 @@ import { ROLE_CONSTANT } from '@/constants/auth.constant';
 import { openNotification } from '@/features/counter/counterSlice';
 import { getCurrentUserByIdAsync } from '@/features/user/user.slice';
 import { LoginProps, RoleModel } from '@/model/auth.model';
-import { setLocalStorageId, setLocalStorageToken } from '@/utils/auth.util';
+import { setLocalStorageId, setLocalStorageRefreshToken, setLocalStorageToken } from '@/utils/auth.util';
 import { isRejected } from '@reduxjs/toolkit';
 import { Button, Col, Form, Input } from 'antd';
 import React from 'react';
@@ -26,6 +26,7 @@ const Login = () => {
       const data = res?.data;
       setLocalStorageToken(data?.token);
       setLocalStorageId(data?.id);
+      setLocalStorageRefreshToken(data?.refreshToken);
 
       const currentUserRes = await dispatch(getCurrentUserByIdAsync(data?.id));
       if (isRejected(currentUserRes)) {
