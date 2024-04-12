@@ -26,6 +26,7 @@ const ListPaymentType = () => {
   const [paymentTypeDetail, setPaymentTypeDetail] = useState<PaymentTypeModels[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
+  const [countPaymentType, setCountPaymentType] = useState<number>(0);
 
   const getPaymentTypeFilter = async (values: PaymentTypeModels, params: ParamsModel) => {
     filterPaymentTypeApi(values, params)
@@ -49,7 +50,7 @@ const ListPaymentType = () => {
       size: DEFAULT_PAGE_SIZE,
     };
     getPaymentTypeFilter(initialValues, params);
-  }, []);
+  }, [countPaymentType]);
 
   const onFinish = async (values: PaymentTypeModels) => {
     const params = {
@@ -98,7 +99,12 @@ const ListPaymentType = () => {
 
   return (
     <>
-      <ModalCreatePaymentType isModalOpen={isOpenModalCreate} onCancel={handleCloseCreate} />
+      <ModalCreatePaymentType
+        isModalOpen={isOpenModalCreate}
+        onCancel={handleCloseCreate}
+        countPaymentType={countPaymentType}
+        setCountPaymentType={setCountPaymentType}
+      />
       <div className="flex items-center justify-between">
         <Breadcrumb
           items={[

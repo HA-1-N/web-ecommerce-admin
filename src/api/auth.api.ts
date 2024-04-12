@@ -12,3 +12,7 @@ export const verifyEmailApi = async (params: any) => {
 export const resetPasswordApi = async (body: any) => {
   return await HTTP_ADMIN_SERVICE.post('/auth/reset-password', body);
 };
+
+export const logoutApi = async (params: any) => {
+  return await HTTP_ADMIN_SERVICE.post(`/auth/logout?refreshToken=${params}`);
+};

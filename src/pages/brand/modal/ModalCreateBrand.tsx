@@ -68,6 +68,7 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
             }),
           );
           form.resetFields();
+          setUploadedImage(null);
           onCancel();
         }
       })
@@ -84,6 +85,7 @@ const ModalCreateBrand = (props: ModalCreateBrandProps) => {
 
   const handleCancel = () => {
     form.resetFields();
+    setUploadedImage(null);
     onCancel();
   };
 

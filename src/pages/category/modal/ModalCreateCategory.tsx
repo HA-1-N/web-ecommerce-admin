@@ -70,6 +70,7 @@ const ModalCreateCategory = (props: ModalCreateCategoryProps) => {
             }),
           );
           form.resetFields();
+          setUploadedImage(null);
           onCancel();
         }
       })
@@ -86,6 +87,7 @@ const ModalCreateCategory = (props: ModalCreateCategoryProps) => {
 
   const handleCancel = () => {
     form.resetFields();
+    setUploadedImage(null);
     onCancel();
   };
 

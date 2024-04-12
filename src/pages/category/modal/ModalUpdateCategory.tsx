@@ -91,6 +91,7 @@ const ModalUpdateCategory = (props: ModalUpdateCategoryProps) => {
 
   const handleCancel = () => {
     form.resetFields();
+    setUploadedImage(categoryDetail?.image);
     onCancel();
   };
 

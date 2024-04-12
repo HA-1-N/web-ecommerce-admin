@@ -17,6 +17,7 @@ import { createProductApi } from '@/api/product.api';
 import { useNavigate } from 'react-router-dom';
 import { getOptionCategoryAsync } from '@/features/category/category.slice';
 import { getOptionBrandAsync } from '@/features/brand/brand.slice';
+import { useForm } from 'antd/es/form/Form';
 
 const FormCreateProduct = () => {
   const initialValues: CreateProductModels = {
@@ -30,6 +31,7 @@ const FormCreateProduct = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [form] = useForm();
 
   const optionCategory = useAppSelector((state) => state?.category?.optionCategory);
   const optionBrand = useAppSelector((state) => state?.brand?.optionBrand);
@@ -58,7 +60,7 @@ const FormCreateProduct = () => {
       brandId: values?.brandId,
       categoryId: values?.categoryId,
       description: values?.description,
-      price: values?.price ? Number(values?.price) : null,
+      price: values?.price ? parseFloat(values?.price?.replace(/,/g, '')) : null,
       status: 1,
     };
     return newValues;
@@ -67,6 +69,7 @@ const FormCreateProduct = () => {
   const onFinish = async (values: CreateProductModels) => {
     const formData = new FormData();
     const body = buildBody(values);
+
     formData.append(
       'data',
       new Blob([JSON.stringify(body)], {
@@ -99,6 +102,12 @@ const FormCreateProduct = () => {
 
   const onReset = () => {
     setFileList([]);
+  };
+
+  const handleChangePrice = (input: any) => {
+    const values = input?.target?.value;
+    const newValues = values ? parseFloat(values.replace(/,/g, '')) : '';
+    form.setFieldValue('price', newValues.toLocaleString('en-US'));
   };
 
   const getBase64 = (file: RcFile): Promise<string> =>
@@ -195,6 +204,7 @@ const FormCreateProduct = () => {
           colon={false}
           layout="vertical"
           initialValues={initialValues}
+          form={form}
         >
           <Row gutter={[16, 16]}>
             <Col span={12}>
@@ -221,6 +231,7 @@ const FormCreateProduct = () => {
                     message: 'Please input your price!',
                   },
                 ]}
+                onChange={handleChangePrice}
               />
             </Col>
             <Col span={24}>

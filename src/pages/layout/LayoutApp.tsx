@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable jsx-a11y/alt-text */
 import Sider from 'antd/es/layout/Sider';
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -7,14 +9,19 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 import { Layout, Button, theme } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
-import { useAppSelector } from '@/app/hook';
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import { ROLE_CONSTANT_ENUM } from '@/constants/auth.constant';
 import RenderMenu from './components/RenderMenu';
 import { MenuItemsModels } from '@/model/sidebar.model';
 import { RoleModel } from '@/model/auth.model';
+import { clearStorage, getLocalStorageRefreshToken } from '@/utils/auth.util';
+import { logoutApi } from '@/api/auth.api';
+import { openNotification } from '@/features/counter/counterSlice';
+import { getMsgErrorApi } from '@/utils/form.util';
 
 const items: MenuItemsModels[] = [
   {
@@ -153,13 +160,13 @@ const items: MenuItemsModels[] = [
     label: 'Order Status',
     roles: [ROLE_CONSTANT_ENUM.ADMIN],
   },
-  // {
-  //   key: 'order',
-  //   path: '/order',
-  //   icon: <VideoCameraOutlined />,
-  //   label: 'Order',
-  //   roles: [ROLE_CONSTANT_ENUM.ADMIN],
-  // },
+  {
+    key: 'order',
+    path: '/order',
+    icon: <VideoCameraOutlined />,
+    label: 'Order',
+    roles: [ROLE_CONSTANT_ENUM.ADMIN],
+  },
   // {
   //   key: 'review',
   //   path: '/review',
@@ -233,14 +240,38 @@ const items: MenuItemsModels[] = [
 ];
 
 const LayoutApp = () => {
+  const dispatch = useAppDispatch();
+
   const currentUser = useAppSelector((state) => state?.user?.currentUser);
+  const getRefreshToken = getLocalStorageRefreshToken();
 
   const [collapsed, setCollapsed] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   const userRoles: ROLE_CONSTANT_ENUM[] = currentUser?.roles?.map((item: RoleModel) => item?.code);
+
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleClickLogout = async () => {
+    const params = {
+      refreshToken: getRefreshToken,
+    };
+    try {
+      const res = await logoutApi(params.refreshToken);
+      if (res) {
+        clearStorage();
+        window.location.href = '/login';
+      }
+    } catch (error) {
+      dispatch(openNotification({ type: 'error', message: getMsgErrorApi(error), description: 'Error' }));
+    }
+  };
 
   return (
     <Layout>
@@ -261,7 +292,18 @@ const LayoutApp = () => {
         collapsible
         collapsed={collapsed}
       >
-        <div className="demo-logo-vertical" />
+        <img
+          className="demo-logo-vertical"
+          src="https://img.freepik.com/free-vector/flat-design-cross-country-design-logo_23-2149481837.jpg"
+          alt="image"
+          style={{
+            width: '100%',
+            height: 'auto',
+            padding: '20px 0',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        />
         <RenderMenu items={items} userRoles={userRoles} />
       </Sider>
       <Layout>
@@ -276,6 +318,21 @@ const LayoutApp = () => {
               height: 64,
             }}
           />
+
+          <div className="float-right mr-20 w-50 h-auto cursor-pointer">
+            <div className="flex items-center" onClick={handleClick}>
+              <img src={currentUser?.image} alt={'logo user'} className="w-10 h-auto flex justify-center py-4" />
+              <span className="text-black text-lg">{currentUser?.name}</span>
+            </div>
+            {isOpen && (
+              <div className="bg-white flex items-center justify-center p-4 hover:bg-gray-300 transition duration-200 ease-in-out hover:ease-in">
+                <LogoutOutlined />
+                <span className="text-black text-lg ml-2" onClick={handleClickLogout}>
+                  Logout
+                </span>
+              </div>
+            )}
+          </div>
         </Header>
         <Content
           style={{
