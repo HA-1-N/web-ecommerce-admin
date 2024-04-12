@@ -1,85 +1,12 @@
 import React from 'react';
+import CardInfo from './component/CardInfo';
 
 const Dashboard = () => {
   return (
     <>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
-      <div>Dashboard</div>
+      <div>
+        <CardInfo />
+      </div>
     </>
   );
 };
