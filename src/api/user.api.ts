@@ -9,3 +9,7 @@ export const getCurrentUserByIdApi = (id: number) => {
 export const filterUserApi = (body: FilterUserModel, params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.post('/user/filter', body, { params });
 };
+
+export const getTotalUserApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/user/total-user');
+};

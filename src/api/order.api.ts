@@ -12,3 +12,11 @@ export const getOrderByIdApi = (id: number) => {
 export const changeOrderStatusApi = (body: any) => {
   return HTTP_ADMIN_SERVICE.post('/order/change-order-status', body);
 };
+
+export const getTotalOrderApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/order/total-order');
+};
+
+export const getTotalRevenueApi = () => {
+  return HTTP_ADMIN_SERVICE.get('/order/total-revenue');
+};
