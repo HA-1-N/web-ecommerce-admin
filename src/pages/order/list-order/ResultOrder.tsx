@@ -1,5 +1,5 @@
 import { filterOrderApi } from '@/api/order.api';
-import { useAppSelector } from '@/app/hook';
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import ChipOrderStatus from '@/components/ChipOrderStatus';
 import PaginationTable from '@/components/Pagination';
 import { OrderStatusModels } from '@/model/order-status.model';
@@ -10,6 +10,9 @@ import Table, { ColumnsType } from 'antd/es/table';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ModalUpdateOrderStatus from '../modal/ModalUpdateOrderStatus';
+import { UserPaymentModel } from '@/model/user.model';
+import { formatDate } from '@/utils/date.util';
+import { changePageSearch } from '@/features/order/order.slice';
 
 const ResultOrder = () => {
   const columns: ColumnsType<OrderDetailModels> = [
@@ -22,7 +25,10 @@ const ResultOrder = () => {
       title: 'Order date',
       dataIndex: 'orderDate',
       key: 'orderDate',
-      render: (value: any) => <span>{new Date(value).toLocaleDateString()}</span>,
+      render: (value: any) => {
+        const format = formatDate(value * 1000, 'DD-MM-YYYY HH:mm:ss');
+        return <span>{format}</span>;
+      },
     },
     {
       title: 'Order Status',
@@ -35,6 +41,14 @@ const ResultOrder = () => {
       dataIndex: 'shippingMethod',
       key: 'shippingMethod',
       render: (values: ShippingMethodModels) => <span>{values?.method}</span>,
+    },
+    {
+      title: 'Payment Method',
+      dataIndex: 'userPayment',
+      key: 'userPayment',
+      render: (values: UserPaymentModel) => {
+        return <span>{values?.paymentType?.type}</span>;
+      },
     },
     {
       title: 'Order Total',
@@ -60,6 +74,7 @@ const ResultOrder = () => {
   ];
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const page = useAppSelector((state) => state.order?.pageSearch);
   const total = useAppSelector((state) => state.order?.totalPage);
@@ -87,6 +102,7 @@ const ResultOrder = () => {
 
   const handleChangePage = (newPage: number) => {
     console.log('handleChangePage', newPage);
+    dispatch(changePageSearch(newPage));
   };
 
   return (
