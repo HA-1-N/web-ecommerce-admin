@@ -1,4 +1,5 @@
 import { RoleModel } from './auth.model';
+import { PaymentTypeModels } from './payment-type.model';
 
 export interface FilterUserModel {
   name?: string | null | undefined;
@@ -31,6 +32,7 @@ export interface UserPaymentModel {
   expiredDate?: string | null | undefined;
   cvv?: string | null | undefined;
   userId?: number | null | undefined;
+  paymentType: PaymentTypeModels;
 }
 
 export interface UserAddressModel {
