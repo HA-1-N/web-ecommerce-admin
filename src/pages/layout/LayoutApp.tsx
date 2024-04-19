@@ -307,7 +307,7 @@ const LayoutApp = () => {
         <RenderMenu items={items} userRoles={userRoles} />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer, position: 'sticky', top: '0' }}>
+        <Header style={{ padding: 0, background: colorBgContainer, position: 'sticky', top: '0', zIndex: '100' }}>
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
