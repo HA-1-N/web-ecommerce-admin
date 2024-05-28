@@ -307,7 +307,7 @@ const LayoutApp = () => {
         <RenderMenu items={items} userRoles={userRoles} />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer, position: 'sticky', top: '0', zIndex: '100' }}>
+        <Header style={{ padding: 0, background: colorBgContainer, position: 'sticky', top: '0' }}>
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -324,16 +324,26 @@ const LayoutApp = () => {
               <img src={currentUser?.image} alt={'logo user'} className="w-10 h-auto flex justify-center py-4" />
               <span className="text-black text-lg">{currentUser?.name}</span>
             </div>
-            {isOpen && (
-              <div className="bg-white flex items-center justify-center p-4 hover:bg-gray-300 transition duration-200 ease-in-out hover:ease-in">
-                <LogoutOutlined />
-                <span className="text-black text-lg ml-2" onClick={handleClickLogout}>
-                  Logout
-                </span>
-              </div>
-            )}
           </div>
         </Header>
+
+        {isOpen && (
+          <div
+            style={{
+              position: 'absolute',
+              right: '70px',
+              top: '70px',
+              zIndex: 10,
+              width: '150px',
+            }}
+            className="bg-white flex items-center justify-center p-4 hover:bg-gray-300 transition duration-200 ease-in-out hover:ease-in"
+          >
+            <LogoutOutlined />
+            <span className="text-black text-lg ml-2" onClick={handleClickLogout}>
+              Logout
+            </span>
+          </div>
+        )}
         <Content
           style={{
             margin: '24px 16px',
