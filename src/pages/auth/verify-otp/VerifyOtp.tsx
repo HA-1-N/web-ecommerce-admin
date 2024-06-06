@@ -1,44 +1,43 @@
-import React from 'react';
-import { verifyEmailApi } from '@/api/auth.api';
+import { verifyOtpApi } from '@/api/auth.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import { openNotification } from '@/features/counter/counterSlice';
+import { getMsgErrorApi } from '@/utils/form.util';
 import { Button, Form } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-interface ValuesProps {
-  email: string;
-}
-
-const VerifyEmail = () => {
-  const navigate = useNavigate();
+const VerifyOtp = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigate();
+  const location = useLocation();
+  const email = location?.state?.email;
 
-  const onFinish = async (values: ValuesProps) => {
-    const params = {
-      email: values?.email,
+  const onFinish = async (values: any) => {
+    const newValues = {
+      email: email ? email : '',
+      otp: values?.otp,
     };
+
     try {
-      const res = await verifyEmailApi(params);
+      const res = await verifyOtpApi(newValues);
       if (res) {
-        navigate('/verify-otp', {
-          state: { email: values?.email },
+        navigation('/reset-password', {
+          state: { email: email },
         });
-      } else {
         dispatch(
           openNotification({
-            type: 'error',
-            message: 'Email không tồn tại',
-            description: 'Error',
+            type: 'success',
+            message: res?.data,
+            description: 'Success',
           }),
         );
       }
-    } catch (error: any) {
-      console.log('error...', error);
+    } catch (error) {
       dispatch(
         openNotification({
           type: 'error',
-          message: error.message,
+          message: getMsgErrorApi(error),
           description: 'Error',
         }),
       );
@@ -58,8 +57,9 @@ const VerifyEmail = () => {
         >
           <div className="container">
             <div>
-              <h1 className="text-2xl font-bold text-center my-3">Verify Email</h1>
+              <h1 className="text-2xl font-bold text-center my-3">Verify OTP</h1>
             </div>
+
             <div className="p-3">
               <Form
                 name="basic"
@@ -74,23 +74,19 @@ const VerifyEmail = () => {
                 layout="vertical"
               >
                 <InputForm
-                  name="email"
-                  label="E-mail"
+                  name="otp"
+                  label="OTP"
                   rules={[
                     {
-                      type: 'email',
-                      message: 'The input is not valid E-mail!',
-                    },
-                    {
                       required: true,
-                      message: 'Please input your E-mail!',
+                      message: 'Please input your OTP!',
                     },
                   ]}
-                  placeholder="Enter Email"
+                  placeholder="Enter OTP"
                 />
                 <Form.Item>
-                  <Button type="primary" className="w-full mt-3" htmlType="submit">
-                    Verify
+                  <Button type="primary" htmlType="submit" className="w-full">
+                    Verify OTP
                   </Button>
                 </Form.Item>
               </Form>
@@ -102,4 +98,4 @@ const VerifyEmail = () => {
   );
 };
 
-export default VerifyEmail;
+export default VerifyOtp;
