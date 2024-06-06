@@ -5,6 +5,7 @@ import ErrorPage from '@/pages/404/ErrorPage';
 import Login from '@/pages/auth/login/Login';
 import ResetPassword from '@/pages/auth/reset-password/ResetPassword';
 import VerifyEmail from '@/pages/auth/verify-email/VerifyEmail';
+import VerifyOtp from '@/pages/auth/verify-otp/VerifyOtp';
 import CreateBanner from '@/pages/banner/create/CreateBanner';
 import ListBanner from '@/pages/banner/list-banner/ListBanner';
 import UpdateBanner from '@/pages/banner/update/UpdateBanner';
@@ -241,6 +242,10 @@ const router = createBrowserRouter([
   {
     path: '/verify-email',
     element: <VerifyEmail />,
+  },
+  {
+    path: '/verify-otp',
+    element: <VerifyOtp />,
   },
   {
     path: '/reset-password',
