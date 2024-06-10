@@ -116,7 +116,7 @@ const ResultOrder = () => {
         />
       )}
       <div className="mt-10">
-        <Table columns={columns} dataSource={orderDetails} pagination={false} />
+        <Table columns={columns} dataSource={orderDetails} pagination={false} rowKey="id" scroll={{ x: 1500 }} />
         <div className="mt-6">
           <PaginationTable page={page} total={total} onChangePage={handleChangePage} />
         </div>

@@ -20,3 +20,7 @@ export const resetPasswordApi = async (body: any) => {
 export const logoutApi = async (params: any) => {
   return await HTTP_ADMIN_SERVICE.post(`/auth/logout?refreshToken=${params}`);
 };
+
+export const updateRoleUserApi = async (id: any, body: any) => {
+  return await HTTP_ADMIN_SERVICE.post(`/auth/update-role/${id}`, body);
+};
