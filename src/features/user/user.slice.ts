@@ -3,6 +3,7 @@ import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 interface InitialStateProps {
   currentUser: any;
+  countUser: number;
 }
 
 const initialState = { currentUser: null } as InitialStateProps;
@@ -19,6 +20,9 @@ const userSlice = createSlice({
     setCurrentUser: (state, action: PayloadAction<any>) => {
       state.currentUser = action.payload;
     },
+    incrementCountUser: (state) => {
+      state.countUser += 1;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCurrentUserByIdAsync.fulfilled, (state, action) => {
@@ -30,5 +34,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setCurrentUser } = userSlice.actions;
+export const { setCurrentUser, incrementCountUser } = userSlice.actions;
 export default userSlice.reducer;
