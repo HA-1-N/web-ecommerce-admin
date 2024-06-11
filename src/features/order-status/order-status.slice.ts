@@ -1,4 +1,4 @@
-import { filterOrderStatusApi } from '@/api/order-status.api';
+import { filterOrderStatusApi, getAllOrderStatusApi } from '@/api/order-status.api';
 import { TOTAL_COUNT_HEADER } from '@/constants/page.constant';
 import { OrderStatusModels } from '@/model/order-status.model';
 import { ParamsModel } from '@/model/page.model';
@@ -31,6 +31,21 @@ const initialState: OrderStatusState = {
   error: null,
 };
 
+export const getOptionOrderStatusAsync = createAsyncThunk('orderStatus/getAllOrderStatus', async (_, thunkApi) => {
+  try {
+    const response = await getAllOrderStatusApi();
+    const convertOptionOrderStatus = response?.data?.map((item: OrderStatusModels) => {
+      return {
+        label: item?.status,
+        value: item?.id,
+      };
+    });
+    return convertOptionOrderStatus;
+  } catch (error) {
+    return thunkApi.rejectWithValue(error);
+  }
+});
+
 export const filterOrderStatusAsync = createAsyncThunk(
   'orderStatus/filter',
   async (data: { body: OrderStatusModels; params: ParamsModel }, thunkApi) => {
@@ -58,6 +73,21 @@ const orderStatusSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder
+      .addCase(getOptionOrderStatusAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getOptionOrderStatusAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.optionOderStatus = action.payload;
+        state.error = null;
+      })
+      .addCase(getOptionOrderStatusAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
     builder
       .addCase(filterOrderStatusAsync.pending, (state) => {
         state.loading = true;

@@ -6,6 +6,10 @@ export const getAllHotCategoryApi = async (params: ParamsModel) => {
   return HTTP_ADMIN_SERVICE.get('/hot-category/get-all', { params });
 };
 
+export const filterHotCategoryApi = async (body: any, params: ParamsModel) => {
+  return HTTP_ADMIN_SERVICE.post('/hot-category/filter', body, { params });
+};
+
 export const createHotCategoryApi = async (body: HotCategoryModels) => {
   return HTTP_ADMIN_SERVICE.post('/hot-category/create', body);
 };

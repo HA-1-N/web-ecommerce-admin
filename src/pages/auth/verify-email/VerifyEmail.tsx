@@ -1,9 +1,9 @@
+import React from 'react';
 import { verifyEmailApi } from '@/api/auth.api';
 import { useAppDispatch } from '@/app/hook';
 import InputForm from '@/components/form/InputForm';
 import { openNotification } from '@/features/counter/counterSlice';
-import { Button, Form, Input } from 'antd';
-import React from 'react';
+import { Button, Form } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 interface ValuesProps {
@@ -20,8 +20,10 @@ const VerifyEmail = () => {
     };
     try {
       const res = await verifyEmailApi(params);
-      if (res?.data === true) {
-        navigate('/reset-password');
+      if (res) {
+        navigate('/verify-otp', {
+          state: { email: values?.email },
+        });
       } else {
         dispatch(
           openNotification({

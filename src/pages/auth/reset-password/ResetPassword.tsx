@@ -5,7 +5,7 @@ import InputPasswordForm from '@/components/form/InputPasswordForm';
 import { openNotification } from '@/features/counter/counterSlice';
 import { Button, Form } from 'antd';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface ValuesProps {
   email?: string;
@@ -15,10 +15,12 @@ interface ValuesProps {
 const ResetPassword = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const email = location?.state?.email;
 
   const onFinish = (values: ValuesProps) => {
     const body = {
-      email: values.email,
+      email: email,
       password: values.password,
     };
     resetPasswordApi(body)
@@ -74,22 +76,6 @@ const ResetPassword = () => {
                 colon={false}
                 layout="vertical"
               >
-                <InputForm
-                  placeholder="Enter Email"
-                  name="email"
-                  label="E-mail"
-                  rules={[
-                    {
-                      type: 'email',
-                      message: 'The input is not valid E-mail!',
-                    },
-                    {
-                      required: true,
-                      message: 'Please input your E-mail!',
-                    },
-                  ]}
-                />
-
                 <InputPasswordForm
                   label="New password"
                   name="password"

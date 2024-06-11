@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Breadcrumb, Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
@@ -7,7 +9,7 @@ import FormSearchUser from './FormSearchUser';
 import ResultUser from './ResultUser';
 import { FilterUserModel, UserModel } from '@/model/user.model';
 import { filterUserApi } from '@/api/user.api';
-import { useAppDispatch } from '@/app/hook';
+import { useAppDispatch, useAppSelector } from '@/app/hook';
 import { openNotification } from '@/features/counter/counterSlice';
 import { getMsgErrorApi } from '@/utils/form.util';
 import { DEFAULT_PAGE_SIZE, TOTAL_COUNT_HEADER } from '@/constants/page.constant';
@@ -23,6 +25,8 @@ const ListUser = () => {
   };
 
   const dispatch = useAppDispatch();
+
+  const countUser = useAppSelector((state) => state.user.countUser);
 
   // const [valuesUpload, setValuesUpload] = useState<FilterUserModel>(initialValues);
   const [userDetail, setUserDetail] = useState<UserModel[]>([]);
@@ -51,7 +55,7 @@ const ListUser = () => {
       size: DEFAULT_PAGE_SIZE,
     };
     getUserFilter(initialValues, params);
-  }, [page]);
+  }, [page, countUser]);
 
   return (
     <>

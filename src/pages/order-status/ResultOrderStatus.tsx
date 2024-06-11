@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hook';
+import ChipOrderStatus from '@/components/ChipOrderStatus';
 import PaginationTable from '@/components/Pagination';
 import { changePageSearch } from '@/features/order-status/order-status.slice';
 import { OrderStatusModels } from '@/model/order-status.model';
@@ -17,6 +18,7 @@ const ResultOrderStatus = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      render: (value: any) => <ChipOrderStatus status={value} />,
     },
     {
       title: 'Action',

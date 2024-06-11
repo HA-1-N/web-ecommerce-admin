@@ -35,7 +35,7 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
 
   const initialValues = {
     name: productDetail?.name,
-    price: productDetail?.price,
+    price: productDetail?.price?.toLocaleString('en-US'),
     description: productDetail?.description,
     brandId: productDetail?.brand?.id,
     categoryId: productDetail?.category?.id,
@@ -76,7 +76,7 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
     const newValues = {
       id: id,
       name: values?.name,
-      price: values?.price,
+      price: parseFloat(values?.price?.replace(/,/g, '')),
       description: values?.description,
       brandId: values?.brandId,
       categoryId: values?.categoryId,
@@ -91,15 +91,14 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
     // console.log('Success:', values);
     const formData = new FormData();
     const body = buildBodyUpdate(values);
-    const checkOriginFileObj = values?.image?.map((item: ProductImageModels) => (item?.originFileObj ? true : false));
 
+    const checkOriginFileObj = values?.image?.map((item: ProductImageModels) => (item?.originFileObj ? true : false));
     formData.append(
       'data',
       new Blob([JSON.stringify(body)], {
         type: 'application/json',
       }),
     );
-
     if (checkOriginFileObj?.includes(true)) {
       values?.image?.forEach((file: ProductImageModels) => {
         if (file?.originFileObj) {
@@ -107,7 +106,6 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
         }
       });
     }
-
     updateProductApi(formData)
       .then((res) => {
         if (res) {
@@ -137,6 +135,12 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
   const onReset = () => {
     setFileList(productDetail?.productImages);
     form.resetFields();
+  };
+
+  const handleChangePrice = (input: any) => {
+    const values = input?.target?.value;
+    const newValues = values ? parseFloat(values.replace(/,/g, '')) : '';
+    form.setFieldValue('price', newValues.toLocaleString('en-US'));
   };
 
   const getBase64 = (file: RcFile): Promise<string> =>
@@ -261,6 +265,7 @@ const FormUpdateProduct = (props: FormUpdateProductProps) => {
                     message: 'Please input your price!',
                   },
                 ]}
+                onChange={handleChangePrice}
               />
             </Col>
             <Col span={24}>
