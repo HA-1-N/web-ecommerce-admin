@@ -321,7 +321,15 @@ const LayoutApp = () => {
 
           <div className="float-right mr-20 w-50 h-auto cursor-pointer">
             <div className="flex items-center" onClick={handleClick}>
-              <img src={currentUser?.image} alt={'logo user'} className="w-10 h-auto flex justify-center py-4" />
+              <img
+                src={
+                  currentUser?.image
+                    ? currentUser?.image
+                    : 'https://res.cloudinary.com/dfk460xfr/image/upload/v1717402890/qh33moogyvofjsucjs0x.png'
+                }
+                alt={'logo user'}
+                className="w-10 h-auto flex justify-center py-4"
+              />
               <span className="text-black text-lg">{currentUser?.name}</span>
             </div>
           </div>
