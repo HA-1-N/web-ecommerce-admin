@@ -87,7 +87,7 @@ const Login = () => {
             </div>
 
             <h1>ÂHAHAHAHAHAHHAHAHA</h1>
-            <h1>BBFBFHHDBHDBFBDBFBH</h1>
+
             {/* form */}
             <div className="p-3">
               <Form
